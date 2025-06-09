@@ -230,6 +230,29 @@ include 'header.php';
         </div>
     </div>
 
+
+    <!-- Modal de Confirmación para Borrado -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="deleteMessage">¿Estás seguro que deseas eliminar los usuarios seleccionados? Esta acción no se puede deshacer.</p>
+                    <input type="hidden" id="usersToDelete">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal para Nuevo Usuario -->
     <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -294,55 +317,40 @@ include 'header.php';
         </div>
     </div>
 
-
-    <!-- Modal de Confirmación para Borrado -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="deleteMessage">¿Estás seguro que deseas eliminar los usuarios seleccionados? Esta acción no se puede deshacer.</p>
-                    <input type="hidden" id="usersToDelete">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+    <!-- Modal confirmacion de nuevo Usuario -->
+    <?php if (isset($_SESSION['notification'])): ?>
+        <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0">
+                    <div class="modal-body text-center py-5">
+                        <div class="mb-3">
+                            <i class="fas fa-<?= $_SESSION['notification']['icon'] ?> text-<?= $_SESSION['notification']['type'] ?> fa-4x"></i>
+                        </div>
+                        <h4 class="mb-4"><?= htmlspecialchars($_SESSION['notification']['message']) ?></h4>
+                        <button type="button" class="btn btn-<?= $_SESSION['notification']['type'] ?>" data-bs-dismiss="modal">
+                            Aceptar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Modal de confirmación -->
-    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-check-circle me-2"></i>Usuario Creado
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="modalMessage">El usuario ha sido creado exitosamente.</p> <!-- Este mensaje se actualizará dinámicamente -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <?php endif; ?>
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/admin-users.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'));
+            notificationModal.show();
 
+            // Limpiar la notificación después de mostrarla
+            notificationModal._element.addEventListener('hidden.bs.modal', function() {
+                <?php unset($_SESSION['notification']); ?>
+            });
+        });
+    </script>
 </body>
 
 </html>

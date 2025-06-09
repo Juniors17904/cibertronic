@@ -84,23 +84,29 @@ include 'header.php';
 
                     <!-- Tabla de Usuarios -->
                     <div class="card shadow">
+                        <!-- Cabecera -->
                         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                             <h5 class="mb-0"><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h5>
+                            <!-- BOTONES -->
                             <div>
+                                <!--NUEVO-->
                                 <button class="btn btn-light btn-sm me-2" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
                                     <i class="fas fa-plus me-1"></i> Nuevo
                                 </button>
+
                                 <div class="btn-group">
+                                    <!--BORRAR-->
                                     <button class="btn btn-danger btn-sm me-2" id="deleteSelected">
                                         <i class="fas fa-trash me-1"></i> Borrar
                                     </button>
+                                    <!--IMPORTAR-->
                                     <button class="btn btn-success btn-sm">
                                         <i class="fas fa-file-import me-1"></i> Importar
                                     </button>
                                 </div>
                             </div>
                         </div>
-
+                        <!-- cuerpo de tabla -->
                         <div class="card-body">
                             <!-- Barra de Búsqueda Avanzada -->
                             <div class="row mb-3 g-2">
@@ -224,6 +230,29 @@ include 'header.php';
         </div>
     </div>
 
+
+    <!-- Modal de Confirmación para Borrado -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="deleteMessage">¿Estás seguro que deseas eliminar los usuarios seleccionados? Esta acción no se puede deshacer.</p>
+                    <input type="hidden" id="usersToDelete">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal para Nuevo Usuario -->
     <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -242,7 +271,12 @@ include 'header.php';
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" name="password" required>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="password" id="passwordField" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Rol</label>
@@ -283,69 +317,39 @@ include 'header.php';
         </div>
     </div>
 
+    <!-- Modal confirmacion de nuevo Usuario -->
+    <?php if (isset($_SESSION['notification'])): ?>
+        <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0">
+                    <div class="modal-body text-center py-5">
+                        <div class="mb-3">
+                            <i class="fas fa-<?= $_SESSION['notification']['icon'] ?> text-<?= $_SESSION['notification']['type'] ?> fa-4x"></i>
+                        </div>
+                        <h4 class="mb-4"><?= htmlspecialchars($_SESSION['notification']['message']) ?></h4>
+                        <button type="button" class="btn btn-<?= $_SESSION['notification']['type'] ?>" data-bs-dismiss="modal">
+                            Aceptar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/admin-users.js"></script>
     <script>
-        // Función para filtrado en tiempo real
-        document.getElementById('searchInput').addEventListener('input', filterTable);
-        document.getElementById('rolFilter').addEventListener('change', filterTable);
-        document.getElementById('statusFilter').addEventListener('change', filterTable);
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'));
+            notificationModal.show();
 
-        // Seleccionar/deseleccionar todos los checkboxes
-        document.getElementById('selectAll').addEventListener('change', function() {
-            document.querySelectorAll('.user-checkbox').forEach(checkbox => {
-                checkbox.checked = this.checked;
+            // Limpiar la notificación después de mostrarla
+            notificationModal._element.addEventListener('hidden.bs.modal', function() {
+                <?php unset($_SESSION['notification']); ?>
             });
         });
-
-        // Eliminar usuarios seleccionados
-        document.getElementById('deleteSelected').addEventListener('click', function() {
-            const selectedIds = Array.from(document.querySelectorAll('.user-checkbox:checked')).map(el => el.value);
-            if (selectedIds.length > 0 && confirm(`¿Eliminar ${selectedIds.length} usuario(s) seleccionado(s)?`)) {
-                // Aquí iría la llamada AJAX para eliminar
-                console.log("IDs a eliminar:", selectedIds);
-            }
-        });
-
-        function filterTable() {
-            const searchText = document.getElementById('searchInput').value.toLowerCase();
-            const rolFilter = document.getElementById('rolFilter').value;
-            const statusFilter = document.getElementById('statusFilter').value;
-
-            let visibleRows = 0;
-
-            document.querySelectorAll('tbody tr').forEach(row => {
-                const email = row.cells[1].textContent.toLowerCase();
-                const name = row.cells[2].textContent.toLowerCase();
-                const rol = row.cells[3].textContent.toLowerCase();
-                const status = row.cells[5].textContent.toLowerCase();
-
-                const matchesSearch = email.includes(searchText) || name.includes(searchText);
-                const matchesRol = rolFilter === '' || rol.includes(rolFilter);
-                const matchesStatus = statusFilter === '' || status.includes(statusFilter);
-
-                if (matchesSearch && matchesRol && matchesStatus) {
-                    row.style.display = '';
-                    visibleRows++;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-
-            document.getElementById('showingCount').textContent = visibleRows;
-        }
-
-        function editUser(id) {
-            // Aquí iría la lógica para editar un usuario
-            console.log("Editar usuario ID:", id);
-            // Podrías abrir un modal similar al de nuevo usuario pero precargado
-        }
-
-        function confirmDelete(id) {
-            if (confirm("¿Estás seguro de eliminar este usuario?")) {
-                // Aquí iría la llamada AJAX para eliminar
-                console.log("Eliminar usuario ID:", id);
-            }
-        }
     </script>
 </body>
 
