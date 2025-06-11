@@ -3,6 +3,9 @@ require_once '../controllers/auth_check.php';
 require_once '../controllers/get_admin_data.php';
 
 $admin = getAdminData($conn, $_SESSION['user_id']);
+$notification = $_SESSION['notification'] ?? null;
+unset($_SESSION['notification']);
+
 
 if (!$admin) {
     die("Administrador no encontrado.");
@@ -231,6 +234,93 @@ include 'header.php';
     </div>
 
     <!-- Modal para Nuevo Usuario -->
+    <!-- <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i>Nuevo Usuario</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Formulario para nuevo usuario -->
+    <!-- <form id="userForm" action="../controllers/create_user.php" method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Correo electrónico</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="password" id="passwordField" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Rol</label>
+                                <select class="form-select" name="rol" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="administrador">Administrador</option>
+                                    <option value="profesor">Profesor</option>
+                                    <option value="alumno">Alumno</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select" name="estado" required>
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" name="telefono">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" class="form-control" name="nombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Apellidos</label>
+                                <input type="text" class="form-control" name="apellidos" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="userForm" class="btn btn-primary">Guardar Usuario</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- Modal de Confirmación para Borrado -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="deleteMessage">¿Estás seguro que deseas eliminar los usuarios seleccionados? Esta acción no se puede deshacer.</p>
+                    <input type="hidden" id="usersToDelete">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Nuevo Usuario 2-->
     <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -239,7 +329,12 @@ include 'header.php';
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Formulario para nuevo usuario -->
+                    <?php if ($notification): ?>
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i> <?= htmlspecialchars($notification['message']) ?>
+                        </div>
+                    <?php endif; ?>
+
                     <form id="userForm" action="../controllers/create_user.php" method="POST">
                         <div class="row g-3">
                             <div class="col-md-6">
@@ -292,66 +387,39 @@ include 'header.php';
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <!-- Modal de Confirmación para Borrado -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="deleteMessage">¿Estás seguro que deseas eliminar los usuarios seleccionados? Esta acción no se puede deshacer.</p>
-                    <input type="hidden" id="usersToDelete">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <?php if (isset($_SESSION['notification'])):
-        echo ("ya esta "); ?>
-        <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-0">
-                    <div class="modal-body text-center py-5">
-                        <div class="mb-3">
-                            <i class="fas fa-<?= $_SESSION['notification']['icon'] ?> text-<?= $_SESSION['notification']['type'] ?> fa-4x"></i>
+        <?php if (isset($_SESSION['notification'])):
+            echo ("ya esta "); ?>
+            <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0">
+                        <div class="modal-body text-center py-5">
+                            <div class="mb-3">
+                                <i class="fas fa-<?= $_SESSION['notification']['icon'] ?> text-<?= $_SESSION['notification']['type'] ?> fa-4x"></i>
+                            </div>
+                            <h4 class="mb-4"><?= htmlspecialchars($_SESSION['notification']['message']) ?></h4>
+                            <button type="button" class="btn btn-<?= $_SESSION['notification']['type'] ?>" data-bs-dismiss="modal">
+                                Aceptar
+                            </button>
                         </div>
-                        <h4 class="mb-4"><?= htmlspecialchars($_SESSION['notification']['message']) ?></h4>
-                        <button type="button" class="btn btn-<?= $_SESSION['notification']['type'] ?>" data-bs-dismiss="modal">
-                            Aceptar
-                        </button>
                     </div>
                 </div>
             </div>
-        </div>
-    <?php endif; ?>
+        <?php endif; ?>
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/admin-users.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'));
-            notificationModal.show();
-
-            // Limpiar la notificación después de mostrarla
-            notificationModal._element.addEventListener('hidden.bs.modal', function() {
-                <?php unset($_SESSION['notification']); ?>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/admin-users.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                <?php if ($notification): ?>
+                    var myModal = new bootstrap.Modal(document.getElementById('nuevoUsuarioModal'));
+                    myModal.show();
+                <?php endif; ?>
             });
-        });
-    </script>
+        </script>
 </body>
 
 </html>
