@@ -3,7 +3,6 @@ require_once '../controllers/auth_check.php';
 require_once '../controllers/get_admin_data.php';
 
 $admin = getAdminData($conn, $_SESSION['user_id']);
-
 if (!$admin) {
     die("Administrador no encontrado.");
 }
@@ -17,48 +16,49 @@ include 'header.php';
             <?php include 'lateral.php' ?>
 
             <!-- Contenido principal -->
-            <main class="col-md-7 col-lg-8 px-5">
-                <div class="perfil-top-barra">
-                    <h1 class="text-center mb-0 text-white">Mi Perfil</h1>
-                </div>
-                <div class="profile-info">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="text-center mb-4">
-                                <img src="../assets/images/perfil.jpg" alt="Foto de perfil" class="img-thumbnail" style="max-width: 150px;">
+            <main class="col-md-6 col-lg-7 px-5 py-4">
+                <div class="card shadow-lg rounded mb-4">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h2 class="mb-0">Mi Perfil</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <div class="text-center mb-4">
+                                    <img src="../assets/images/perfil.jpg" alt="Foto de perfil" class="img-thumbnail rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                </div>
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars($admin['nombre']) ?>" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Apellidos</label>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars($admin['apellidos']) ?>" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Teléfono</label>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars($admin['telefono']) ?>" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Correo electrónico</label>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars($admin['correo']) ?>" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Rol</label>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars(ucfirst($admin['rol'])) ?>" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Estado</label>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars(ucfirst($admin['estado'])) ?>" readonly>
+                                    </div>
+                                </form>
                             </div>
-                            <form>
-                                <div class="mb-3">
-                                    <label class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($admin['nombre']) ?>" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Apellidos</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($admin['apellidos']) ?>" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($admin['telefono']) ?>" readonly>
-                                </div>
-                                <!-- Nuevos campos añadidos -->
-                                <div class="mb-3">
-                                    <label class="form-label">Correo electrónico</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($admin['correo']) ?>" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Rol</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars(ucfirst($admin['rol'])) ?>" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Estado</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars(ucfirst($admin['estado'])) ?>" readonly>
-                                </div>
-                            </form>
                         </div>
                     </div>
-                </div>
-                <div class="perfil-bajo-barra text-center">
-                    <!-- <a href="admin_profile_edit.php" class="btn btn-light">Editar Perfil</a> -->
+                    <div class="card-footer text-center bg-light">
+                        <!-- <a href="admin_profile_edit.php" class="btn btn-outline-primary">Editar Perfil</a> -->
+                    </div>
                 </div>
             </main>
         </div>

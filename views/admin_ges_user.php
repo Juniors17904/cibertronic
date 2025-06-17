@@ -83,6 +83,10 @@ include 'header.php';
                                 </div>
                             </div>
                         </div>
+
+
+
+
                     </div>
 
                     <!-- Tabla de Usuarios -->
@@ -189,12 +193,14 @@ include 'header.php';
                                                         </span></td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
+                                                            <!-- Boton de editar -->
                                                             <button class="btn btn-outline-primary"
                                                                 data-bs-toggle="tooltip"
                                                                 title="Editar"
                                                                 onclick="editUser(<?= $user['id'] ?>)">
                                                                 <i class="fas fa-edit"></i>
                                                             </button>
+                                                            <!-- boton de eliminar -->
                                                             <button class="btn btn-outline-danger"
                                                                 data-bs-toggle="tooltip"
                                                                 title="Eliminar"
@@ -234,161 +240,96 @@ include 'header.php';
         </div>
     </div>
 
-    <!-- Modal para Nuevo Usuario -->
-    <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i>Nuevo Usuario</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-
-                    <form id="userForm" action="../controllers/create_user.php" method="POST">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Correo electrónico</label>
-                                <input type="email" class="form-control" name="email" required
-                                    value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Contraseña</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" name="password" id="passwordField" required>
-                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Rol</label>
-                                <select class="form-select" name="rol" required>
-                                    <option value="">Seleccionar...</option>
-                                    <option value="administrador" <?= (isset($_POST['rol']) && $_POST['rol'] === 'administrador') ? 'selected' : '' ?>>Administrador</option>
-                                    <option value="profesor" <?= (isset($_POST['rol']) && $_POST['rol'] === 'profesor') ? 'selected' : '' ?>>Profesor</option>
-                                    <option value="alumno" <?= (isset($_POST['rol']) && $_POST['rol'] === 'alumno') ? 'selected' : '' ?>>Alumno</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Estado</label>
-                                <select class="form-select" name="estado" required>
-                                    <option value="activo" <?= (isset($_POST['estado']) && $_POST['estado'] === 'activo') ? 'selected' : '' ?>>Activo</option>
-                                    <option value="inactivo" <?= (isset($_POST['estado']) && $_POST['estado'] === 'inactivo') ? 'selected' : '' ?>>Inactivo</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Teléfono</label>
-                                <input type="text" class="form-control" name="telefono"
-                                    value="<?= isset($_POST['telefono']) ? htmlspecialchars($_POST['telefono']) : '' ?>">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Nombre</label>
-                                <input type="text" class="form-control" name="nombre" required
-                                    value="<?= isset($_POST['nombre']) ? htmlspecialchars($_POST['nombre']) : '' ?>">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Apellidos</label>
-                                <input type="text" class="form-control" name="apellidos" required
-                                    value="<?= isset($_POST['apellidos']) ? htmlspecialchars($_POST['apellidos']) : '' ?>">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" form="userForm" class="btn btn-primary">Guardar Usuario</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Confirmación para Borrado -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="deleteMessage">¿Estás seguro que deseas eliminar los usuarios seleccionados? Esta acción no se puede deshacer.</p>
-                    <input type="hidden" id="usersToDelete">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Modal de confirmación de eliminación individual -->
-    <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="modalEliminarLabel">
-                        <i class="fas fa-exclamation-circle me-2"></i>Confirmar Eliminación
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="textoConfirmacion">Estás a punto de eliminar este usuario. Esta acción no se puede deshacer. ¿Deseas continuar?</p>
-                    <input type="hidden" id="usuarioIdEliminar">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de confirmación para múltiples eliminaciones -->
-    <div class="modal fade" id="modalEliminarSeleccionados" tabindex="-1" aria-labelledby="modalEliminarSeleccionadosLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="modalEliminarSeleccionadosLabel">
-                        <i class="fas fa-user-minus me-2"></i>Eliminar Usuarios Seleccionados
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="mensajeEliminarSeleccionados">¿Estás seguro que deseas eliminar los usuarios seleccionados? Esta acción no se puede deshacer.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmarEliminarSeleccionados">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- toast -->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto">Notificación</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body"></div>
-        </div>
-    </div>
+    <?php
+    include 'modals/modal_eliminar_usuario.php';
+    include 'modals/modal_eliminar_multiple.php';
+    include 'modals/modal_agregar_nuevo_usuario.php';
+    include 'modals/toast_notificacion.php';
+    include 'modals/modal_editar_usuario.php';
+    ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/admin-users.js"></script>
     <script>
+        ///////////////////////////////
+        // editar usuario
+        function editUser(id) {
+            console.log('🛠️ Iniciando edición de usuario. ID recibido:', id);
+
+            fetch(`../controllers/get_user_data.php?id=${id}`)
+                .then(res => {
+                    console.log('📡 Respuesta recibida del servidor.');
+                    return res.json();
+                })
+                .then(data => {
+                    console.log('📦 Datos recibidos:', data);
+                    if (data.success) {
+                        const user = data.user;
+                        console.log('✅ Usuario válido. Mostrando datos en el formulario.');
+
+                        document.getElementById('editarUsuarioId').value = user.id;
+                        document.getElementById('editarNombre').value = user.nombre;
+                        document.getElementById('editarApellidos').value = user.apellidos;
+                        document.getElementById('editarCorreo').value = user.correo;
+                        document.getElementById('editarTelefono').value = user.telefono;
+                        document.getElementById('editarRol').value = user.rol;
+                        document.getElementById('editarEstado').value = user.estado;
+
+                        // La contraseña NO se llena por seguridad
+
+                        const modal = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
+                        modal.show();
+                    } else {
+                        showNotification('No se pudo cargar el usuario.', 'danger', 'exclamation-triangle');
+                    }
+                })
+                .catch(err => {
+                    console.error('❌ Error al obtener datos del usuario:', err);
+                    showNotification('Error de red al cargar usuario.', 'danger', 'times-circle');
+                });
+        }
+
+
+
+        document.getElementById('formEditarUsuario')?.addEventListener('submit', function(e) {
+            e.preventDefault(); // ⛔ evita recargar la página
+            const form = this;
+
+            const formData = new FormData(form);
+            console.log('📤 Enviando datos del formulario:', Object.fromEntries(formData.entries()));
+
+            fetch('../controllers/update_user.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log('📥 Respuesta del servidor:', data);
+                    if (data.success) {
+                        showNotification('Usuario actualizado correctamente.', 'success', 'check-circle');
+                        bootstrap.Modal.getInstance(document.getElementById('modalEditarUsuario')).hide();
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showNotification('Error: ' + data.message, 'danger', 'times-circle');
+                    }
+                })
+                .catch(err => {
+                    console.error('❌ Error de red:', err);
+                    showNotification('Error de red al actualizar usuario.', 'danger', 'times-circle');
+                });
+        });
+
+
+
+
+
+
+
         ///////////////////////////////////
 
         // eliminación múltiple
         document.getElementById('btnAbrirModalEliminarSeleccionados')?.addEventListener('click', function() {
+            console.log('btn eliminar seleccionados');
             const selectedCheckboxes = document.querySelectorAll('.user-checkbox:checked');
             if (selectedCheckboxes.length === 0) {
                 showNotification('No hay usuarios seleccionados.', 'warning', 'exclamation-triangle');
@@ -404,6 +345,7 @@ include 'header.php';
 
         // Confirmar eliminación múltiple
         document.getElementById('btnConfirmarEliminarSeleccionados')?.addEventListener('click', function() {
+            console.log('confirmar eliminar seleccionados');
             const ids = this.dataset.ids;
             fetch('../controllers/delete_users.php', {
                     method: 'POST',
@@ -433,6 +375,7 @@ include 'header.php';
         //////////////////////////////////////
         // eliminación por fila
         function confirmDelete(id) {
+            console.log('btn confirmar eliminacion individual');
             document.getElementById('usuarioIdEliminar').value = id;
             let modal = new bootstrap.Modal(document.getElementById('modalEliminarUsuario'));
             modal.show();

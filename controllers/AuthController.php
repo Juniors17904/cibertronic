@@ -10,8 +10,8 @@ class AuthController
 
         if ($userData) {
             // Verificar la contraseña (usando password_verify si la contraseña está hashada)
-            //if (password_verify($password, $userData['password'])) {
-            if ($password === $userData['password']) {
+            if (password_verify($password, $userData['password'])) {
+                //if ($password === $userData['password']) {
                 // Almacenar el id y el rol del usuario en la sesión
                 session_start();
                 $_SESSION['user_id'] = $userData['id'];

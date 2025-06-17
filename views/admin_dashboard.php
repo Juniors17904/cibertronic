@@ -1,12 +1,18 @@
 <?php
 require_once '../controllers/auth_check.php';
 require_once '../controllers/get_admin_data.php';
+require_once '../config/config.php';
 
 $admin = getAdminData($conn, $_SESSION['user_id']);
-
 if (!$admin) {
     die("Administrador no encontrado.");
 }
+
+// Contadores desde la base de datos
+$usuarios_total    = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_assoc()['total'];
+$cursos_total      = $conn->query("SELECT COUNT(*) AS total FROM cursos")->fetch_assoc()['total'];
+$matriculas_total  = $conn->query("SELECT COUNT(*) AS total FROM matriculas")->fetch_assoc()['total'];
+
 include 'header.php';
 ?>
 
@@ -23,22 +29,22 @@ include 'header.php';
                     <div class="col-md-4 mb-3">
                         <div class="card bg-primary text-white p-3 shadow">
                             <h5 class="card-title"><i class="bi bi-people-fill"></i> Usuarios</h5>
-                            <p class="card-text fs-4">1,250</p>
+                            <p class="card-text fs-4"><?= $usuarios_total ?></p>
                             <a href="admin_ges_user.php" class="text-white">Ver más <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="card bg-success text-white p-3 shadow">
                             <h5 class="card-title"><i class="bi bi-book-fill"></i> Cursos</h5>
-                            <p class="card-text fs-4">45</p>
+                            <p class="card-text fs-4"><?= $cursos_total ?></p>
                             <a href="admin_courses.php" class="text-white">Ver más <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="card bg-warning text-dark p-3 shadow">
-                            <h5 class="card-title"><i class="bi bi-flag-fill"></i> Reportes</h5>
-                            <p class="card-text fs-4">8</p>
-                            <a href="admin_reports.php" class="text-dark">Ver más <i class="bi bi-arrow-right"></i></a>
+                            <h5 class="card-title"><i class="bi bi-clipboard-check-fill"></i> Matrículas</h5>
+                            <p class="card-text fs-4"><?= $matriculas_total ?></p>
+                            <a href="admin_matriculas.php" class="text-dark">Ver más <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>

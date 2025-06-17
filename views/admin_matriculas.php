@@ -1,7 +1,6 @@
 <?php
 require_once '../controllers/auth_check.php';
 require_once '../controllers/get_admin_data.php';
-require_once '../config/config.php'; // Conexión mysqli
 
 $admin = getAdminData($conn, $_SESSION['user_id']);
 
@@ -22,23 +21,21 @@ include 'header.php';
             <!-- Contenido principal -->
             <main class="col-md-7 col-lg-8 px-5">
 
-
-
-                <h2 class="text-center mt-4 mb-4">Nueva Matrícula</h2>
+                <h2 class="text-center mt-4 mb-4 text-primary">Nueva Matrícula</h2>
 
                 <form>
                     <!-- Selección de alumno -->
                     <div class="mb-3">
                         <label for="alumno" class="form-label">Seleccionar Alumno</label>
-                        <select id="alumno" class="form-select" required>
+                        <select id="alumno" class="form-select border-primary" required>
                             <option value="">-- Seleccione un alumno --</option>
                             <?php
                             $alumnos = $conn->query("
-                SELECT u.id, a.nombre, a.apellidos 
-                FROM usuarios u
-                JOIN alumnos a ON u.id = a.usuario_id
-                WHERE u.rol = 'alumno'
-            ");
+                                SELECT u.id, a.nombre, a.apellidos 
+                                FROM usuarios u
+                                JOIN alumnos a ON u.id = a.usuario_id
+                                WHERE u.rol = 'alumno'
+                            ");
                             while ($alumno = $alumnos->fetch_assoc()):
                             ?>
                                 <option value="<?= $alumno['id'] ?>">
@@ -51,7 +48,7 @@ include 'header.php';
                     <!-- Selección de área -->
                     <div class="mb-3">
                         <label for="area" class="form-label">Seleccionar Área</label>
-                        <select id="area" class="form-select" required>
+                        <select id="area" class="form-select border-primary" required>
                             <option value="">-- Seleccione un área --</option>
                             <?php
                             $areas = $conn->query("SELECT id, nombre_area FROM areas WHERE estado = 1");
@@ -65,7 +62,7 @@ include 'header.php';
                     <!-- Selección de curso -->
                     <div class="mb-3">
                         <label for="curso" class="form-label">Seleccionar Curso</label>
-                        <select id="curso" class="form-select" required disabled>
+                        <select id="curso" class="form-select border-primary" required disabled>
                             <option value="">-- Seleccione un área primero --</option>
                         </select>
                     </div>
@@ -73,35 +70,77 @@ include 'header.php';
                     <!-- Selección de horario -->
                     <div class="mb-3">
                         <label for="horario" class="form-label">Seleccionar Horario</label>
-                        <select id="horario" class="form-select" required disabled>
+                        <select id="horario" class="form-select border-primary" required disabled>
                             <option value="">-- Seleccione un curso primero --</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary" id="btnMatricular" disabled>Matricular</button>
-
+                    <button type="submit" class="btn btn-success" id="btnMatricular" disabled>Matricular</button>
                 </form>
 
+                <h2 class="text-center mt-5 mb-4 text-success">📋 Matrículas Registradas</h2>
 
+                <div class="table-responsive rounded shadow border">
+                    <table class="table table-bordered table-hover shadow-sm">
+                        <thead class="table-primary text-center">
+                            <tr>
+                                <th>#</th>
+                                <th>Alumno</th>
+                                <th>Área</th>
+                                <th>Curso</th>
+                                <th>Horario</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <?php
+                            $sql = "
+                                SELECT 
+                                    m.id,
+                                    CONCAT(a.nombre, ' ', a.apellidos) AS alumno,
+                                    ar.nombre_area AS area,
+                                    c.nombre_curso AS curso,
+                                    CONCAT(h.dia, ' ', h.hora_inicio, ' - ', h.hora_fin) AS horario
+                                FROM matriculas m
+                                INNER JOIN alumnos a ON m.alumno_id = a.id
+                                INNER JOIN cursos c ON m.curso_id = c.id
+                                INNER JOIN areas ar ON c.id_area = ar.id
+                                INNER JOIN horarios h ON m.horario_id = h.id
+                                ORDER BY alumno ASC
+                            ";
 
-
-
-
-
-
+                            $matriculas = $conn->query($sql);
+                            if (!$matriculas) {
+                                echo "<tr><td colspan='5' class='text-danger'>❌ Error en la consulta: " . htmlspecialchars($conn->error) . "</td></tr>";
+                            } elseif ($matriculas->num_rows > 0) {
+                                $n = 1;
+                                while ($row = $matriculas->fetch_assoc()):
+                            ?>
+                                    <tr>
+                                        <td><?= $n++ ?></td>
+                                        <td><?= htmlspecialchars($row['alumno']) ?></td>
+                                        <td><span class="badge bg-info text-dark"><?= htmlspecialchars($row['area']) ?></span></td>
+                                        <td><span class="badge bg-secondary"><?= htmlspecialchars($row['curso']) ?></span></td>
+                                        <td><span class="text-muted"><?= htmlspecialchars($row['horario']) ?></span></td>
+                                    </tr>
+                            <?php
+                                endwhile;
+                            } else {
+                                echo "<tr><td colspan='5'>No hay matrículas registradas.</td></tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </main>
-
-
-
-
-
         </div>
     </div>
 
+    <?php
+    include 'modals/toast_notificacion.php';
+    ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Cargar cursos por área
         document.getElementById('area').addEventListener('change', function() {
             const areaId = this.value;
             const cursoSelect = document.getElementById('curso');
@@ -136,7 +175,6 @@ include 'header.php';
                 });
         });
 
-        // Cargar horarios por curso
         document.getElementById('curso').addEventListener('change', function() {
             const cursoId = this.value;
             const horarioSelect = document.getElementById('horario');
@@ -167,8 +205,7 @@ include 'header.php';
                     horarioSelect.disabled = false;
                 });
         });
-    </script>
-    <script>
+
         document.querySelector('form')?.addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -195,19 +232,19 @@ include 'header.php';
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        alert("✅ Matrícula registrada correctamente.");
-                        location.reload();
+                        showNotification('Matrícula registrada correctamente.', 'success', 'check-circle');
+                        setTimeout(() => location.reload(), 2000);
                     } else {
-                        alert("⚠️ " + data.message);
+                        showNotification(data.message, 'danger', 'exclamation-triangle');
                     }
                 })
+
                 .catch(err => {
                     console.error("❌ Error:", err);
                     alert("Error de red.");
                 });
         });
-    </script>
-    <script>
+
         const alumno = document.getElementById('alumno');
         const curso = document.getElementById('curso');
         const horario = document.getElementById('horario');
@@ -217,14 +254,55 @@ include 'header.php';
             btn.disabled = !(alumno.value && curso.value && horario.value);
         }
 
+        function showNotification(message, type, icon) {
+            var toastEl = document.getElementById('liveToast');
+            var toastHeader = toastEl.querySelector('.toast-header');
+            var toastBody = toastEl.querySelector('.toast-body');
+
+            // Limpiar clases anteriores
+            toastHeader.className = 'toast-header';
+            toastBody.className = 'toast-body';
+
+            // Añadir clases de color según el tipo
+            switch (type) {
+                case 'success':
+                    toastHeader.classList.add('bg-success', 'text-white');
+                    break;
+                case 'danger':
+                    toastHeader.classList.add('bg-danger', 'text-white');
+                    break;
+                case 'warning':
+                    toastHeader.classList.add('bg-warning', 'text-dark');
+                    break;
+                default:
+                    toastHeader.classList.add('bg-primary', 'text-white');
+            }
+
+            toastBody.innerHTML = `<i class="fas fa-${icon} me-2"></i> ${message}`;
+            var toast = new bootstrap.Toast(toastEl);
+            toast.show();
+
+            // Ocultar automáticamente después de 5 segundos
+            setTimeout(() => toast.hide(), 5000);
+        }
+
+
         alumno.addEventListener('change', validarCampos);
         curso.addEventListener('change', validarCampos);
         horario.addEventListener('change', validarCampos);
+
+        //-------------------------
+        if (data.success) {
+            const toastElement = document.getElementById('liveToast');
+            const toastBody = toastElement.querySelector('.toast-body');
+
+            toastBody.textContent = "✅ Matrícula registrada correctamente.";
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+
+            setTimeout(() => location.reload(), 2000);
+        }
     </script>
-
-
-
-
 </body>
 
 </html>
