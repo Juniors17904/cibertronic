@@ -1,13 +1,14 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 
-function getAdminData($conn, $user_id)
+//Obtiene los datos del profesor a partir del ID de usuario
+function getProfData($conn, $user_id)
 {
-    // Consulta SQL para obtener datos del administrador y del usuario asociado
-    $sql = "SELECT a.*, u.correo, u.rol, u.estado 
-            FROM administrador a
-            INNER JOIN usuarios u ON a.usuario_id = u.id
-            WHERE a.usuario_id = ?";
+    // Consulta SQL para obtener datos del profesor y del usuario asociado
+    $sql = "SELECT p.*, u.correo, u.rol, u.estado 
+            FROM profesores p
+            INNER JOIN usuarios u ON p.usuario_id = u.id
+            WHERE p.usuario_id = ?";
 
     // Preparar y ejecutar la consulta de forma segura
     if ($stmt = $conn->prepare($sql)) {
@@ -17,7 +18,7 @@ function getAdminData($conn, $user_id)
         return $result->fetch_assoc();     // Retorna los datos como array asociativo
     } else {
         // Si falla la preparación, registra el error en el log
-        error_log("❌ Error al preparar consulta getAdminData: " . $conn->error);
+        error_log("❌ Error al preparar consulta getProfData: " . $conn->error);
         return null;  // Retorna null en caso de error
     }
 }

@@ -1,13 +1,13 @@
 <?php
-require_once '../controllers/auth_check.php';
-require_once '../controllers/get_admin_data.php';
+require_once '../../controllers/auth_check.php';
+require_once '../../controllers/get_admin_data.php';
 
 $admin = getAdminData($conn, $_SESSION['user_id']);
 
 if (!$admin) {
     die("Administrador no encontrado.");
 }
-include 'header.php';
+include '../header.php';
 ?>
 
 <body>

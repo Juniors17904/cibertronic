@@ -1,8 +1,6 @@
 <?php
-require_once '../controllers/auth_check.php';
-require_once '../controllers/get_admin_data.php';
-require_once '../config/config.php';
-
+require_once '../../controllers/auth_check.php';
+require_once '../../controllers/get_admin_data.php';
 $admin = getAdminData($conn, $_SESSION['user_id']);
 if (!$admin) {
     die("Administrador no encontrado.");
@@ -13,7 +11,7 @@ $usuarios_total    = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fet
 $cursos_total      = $conn->query("SELECT COUNT(*) AS total FROM cursos")->fetch_assoc()['total'];
 $matriculas_total  = $conn->query("SELECT COUNT(*) AS total FROM matriculas")->fetch_assoc()['total'];
 
-include 'header.php';
+include '../header.php';
 ?>
 
 <body>

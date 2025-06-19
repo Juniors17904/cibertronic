@@ -193,6 +193,8 @@ function showNotification(message, type, icon) {
     setTimeout(() => toast.hide(), 5000);
 }
 
+
+
 function closeModalAndReload() {
     var modal = bootstrap.Modal.getInstance(document.getElementById('nuevoUsuarioModal'));
     if (modal) modal.hide();

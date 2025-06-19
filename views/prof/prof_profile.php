@@ -1,12 +1,12 @@
 <?php
-require_once '../controllers/auth_check.php';
-require_once '../controllers/get_admin_data.php';
+require_once '../../controllers/auth_check.php';
+require_once '../../controllers/get_prof_data.php';
 
-$admin = getAdminData($conn, $_SESSION['user_id']);
-if (!$admin) {
-    die("Administrador no encontrado.");
+$prof = getProfData($conn, $_SESSION['user_id']);
+if (!$prof) {
+    die("Profesor no encontrado.");
 }
-include 'header.php';
+include '../header.php';
 ?>
 
 <body>
@@ -25,32 +25,32 @@ include 'header.php';
                         <div class="row justify-content-center">
                             <div class="col-md-6">
                                 <div class="text-center mb-4">
-                                    <img src="../assets/images/perfil.jpg" alt="Foto de perfil" class="img-thumbnail rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                    <img src="../../assets/images/perfil.jpg" alt="Foto de perfil" class="img-thumbnail rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
                                 </div>
                                 <form>
                                     <div class="mb-3">
                                         <label class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" value="<?= htmlspecialchars($admin['nombre']) ?>" readonly>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars($prof['nombre']) ?>" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Apellidos</label>
-                                        <input type="text" class="form-control" value="<?= htmlspecialchars($admin['apellidos']) ?>" readonly>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars($prof['apellidos']) ?>" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Teléfono</label>
-                                        <input type="text" class="form-control" value="<?= htmlspecialchars($admin['telefono']) ?>" readonly>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars($prof['telefono']) ?>" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Correo electrónico</label>
-                                        <input type="text" class="form-control" value="<?= htmlspecialchars($admin['correo']) ?>" readonly>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars($prof['correo']) ?>" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Rol</label>
-                                        <input type="text" class="form-control" value="<?= htmlspecialchars(ucfirst($admin['rol'])) ?>" readonly>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars(ucfirst($prof['rol'])) ?>" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Estado</label>
-                                        <input type="text" class="form-control" value="<?= htmlspecialchars(ucfirst($admin['estado'])) ?>" readonly>
+                                        <input type="text" class="form-control" value="<?= htmlspecialchars(ucfirst($prof['estado'])) ?>" readonly>
                                     </div>
                                 </form>
                             </div>

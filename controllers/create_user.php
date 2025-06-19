@@ -10,7 +10,7 @@ if ($_SESSION['user_role'] !== 'administrador') {
         'message' => 'No tienes permisos para realizar esta acción',
         'icon' => 'exclamation-circle'
     ];
-    header("Location: ../views/admin_ges_user.php");
+    header("Location: ../views/admin/admin_ges_user.php");
     exit();
 }
 
@@ -32,7 +32,7 @@ if (empty($email) || empty($password) || empty($rol) || empty($nombre) || empty(
     ];
     $_SESSION['show_modal'] = true;
     $_SESSION['form_data'] = $_POST;
-    header("Location: ../views/admin_ges_user.php");
+    header("Location: ../views/admin/admin_ges_user.php");
     exit();
 }
 
@@ -45,7 +45,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     ];
     $_SESSION['show_modal'] = true;
     $_SESSION['form_data'] = $_POST;
-    header("Location: ../views/admin_ges_user.php");
+    header("Location: ../views/admin/admin_ges_user.php");
     exit();
 }
 
@@ -58,7 +58,7 @@ if (strlen($password) < 6) {
     ];
     $_SESSION['show_modal'] = true;
     $_SESSION['form_data'] = $_POST;
-    header("Location: ../views/admin_ges_user.php");
+    header("Location: ../views/admin/admin_ges_user.php");
     exit();
 }
 
@@ -71,7 +71,7 @@ if (!empty($telefono) && !preg_match('/^\d+$/', $telefono)) {
     ];
     $_SESSION['show_modal'] = true;
     $_SESSION['form_data'] = $_POST;
-    header("Location: ../views/admin_ges_user.php");
+    header("Location: ../views/admin/admin_ges_user.php");
     exit();
 }
 
@@ -85,7 +85,7 @@ if (!in_array($rol, $roles_permitidos)) {
     ];
     $_SESSION['show_modal'] = true;
     $_SESSION['form_data'] = $_POST;
-    header("Location: ../views/admin_ges_user.php");
+    header("Location: ../views/admin/admin_ges_user.php");
     exit();
 }
 
@@ -105,7 +105,7 @@ try {
         ];
         $_SESSION['show_modal'] = true;
         $_SESSION['form_data'] = $_POST;
-        header("Location: ../views/admin_ges_user.php");
+        header("Location: ../views/admin/admin_ges_user.php");
         exit();
     }
 
@@ -141,7 +141,7 @@ try {
         'icon' => 'check-circle'
     ];
 
-    header("Location: ../views/admin_ges_user.php");
+    header("Location: ../views/admin/admin_ges_user.php");
     exit();
 } catch (Exception $e) {
     // Manejo de errores
@@ -152,6 +152,6 @@ try {
     ];
     $_SESSION['show_modal'] = true;
     $_SESSION['form_data'] = $_POST;
-    header("Location: ../views/admin_ges_user.php");
+    header("Location: ../views/admin/admin_ges_user.php");
     exit();
 }

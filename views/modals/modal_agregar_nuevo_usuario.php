@@ -9,7 +9,7 @@
                 <div class="modal-body">
 
 
-                    <form id="userForm" action="../controllers/create_user.php" method="POST">
+                    <form id="userForm" action="../../controllers/create_user.php" method="POST">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Correo electrónico</label>

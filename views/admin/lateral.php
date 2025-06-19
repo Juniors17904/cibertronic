@@ -33,7 +33,7 @@
 
         <!-- Botón cerrar sesión -->
         <div class="sidebar-footer mt-auto p-3 border-top">
-            <a href="../controllers/logout.php" class="btn btn-danger w-100">
+            <a href="../../controllers/logout.php" class="btn btn-danger w-100">
                 <i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión
             </a>
         </div>

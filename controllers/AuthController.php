@@ -9,30 +9,34 @@ class AuthController
         $userData = $user->verificarUsuario($email); // Verificar si el correo existe
 
         if ($userData) {
-            // Verificar la contraseña (usando password_verify si la contraseña está hashada)
+            // Verificar si el rol está habilitado (solo admin y profesor)
+            if (!in_array($userData['rol'], ['administrador', 'profesor'])) {
+                // Si el rol no está permitido (ej. alumno), redirige con mensaje
+                header('Location: ../views/login.php?error=sesion');
+                exit();
+            }
+
+            // Verificar la contraseña (hasheada)
             if (password_verify($password, $userData['password'])) {
-                //if ($password === $userData['password']) {
-                // Almacenar el id y el rol del usuario en la sesión
+                // Iniciar sesión y guardar datos
                 session_start();
                 $_SESSION['user_id'] = $userData['id'];
                 $_SESSION['user_role'] = $userData['rol'];
 
-                // Redirigir según el rol del usuario
-                if ($userData['rol'] == 'administrador') {
-                    header("Location: ../views/admin_dashboard.php");
-                } elseif ($userData['rol'] == 'profesor') {
-                    header("Location: /professor_dashboard.php");
-                } else {
-                    header("Location: /student_dashboard.php");
+                // Redirigir según el rol
+                if ($userData['rol'] === 'administrador') {
+                    header("Location: ../views/admin/admin_dashboard.php");
+                } elseif ($userData['rol'] === 'profesor') {
+                    header("Location: ../views/prof/prof_dashboard.php");
                 }
-                exit();  // Asegúrate de detener la ejecución después de redirigir
+                exit();
             } else {
-                // Contraseña incorrecta, redirige al login con mensaje de error
+                // Contraseña incorrecta
                 header('Location: ../views/login.php?error=contraseña_incorrecta');
                 exit();
             }
         } else {
-            // Correo no registrado, redirige al login con mensaje de error
+            // Correo no registrado
             header('Location: ../views/login.php?error=correo_no_registrado');
             exit();
         }

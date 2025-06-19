@@ -46,6 +46,8 @@ include 'header.php';
                         <?php
                         if ($_GET['error'] == 'correo_no_registrado') {
                             echo "Correo electrónico no registrado.";
+                        } elseif ($_GET['error'] == 'sesion') {
+                            echo "El acceso al panel de estudiantes aún no está disponible.";
                         } elseif ($_GET['error'] == 'contraseña_incorrecta') {
                             echo "Contraseña incorrecta.";
                         }

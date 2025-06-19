@@ -1,4 +1,4 @@
-<!-- Cabecera Premium -->
+<!-- Cabecera Profesor -->
 <header class="navbar navbar-expand-md navbar-dark bg-dark shadow-lg">
     <div class="container-fluid">
         <!-- Logo/Brand - Versión Mejorada -->
@@ -8,7 +8,7 @@
                 <i class="fas fa-shield-alt fa-lg text-white"></i>
             </div>
             <span class="brand-text">
-                <span class="d-none d-md-inline-block">CYBERTRONIC</span>
+                <span class="d-none d-md-inline-block">CIBERTRONIC</span>
                 <small class="d-block d-md-none">CT</small>
             </span>
         </a>
@@ -39,11 +39,11 @@
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                     <div class="position-relative">
-                        <img src="../assets/images/perfil.jpg" alt="Perfil" width="36" height="36" class="rounded-circle border border-2 border-primary me-2">
+                        <img src="../../assets/images/perfil.jpg" alt="Perfil" width="36" height="36" class="rounded-circle border border-2 border-primary me-2">
                         <span class="position-absolute bottom-0 end-0 bg-success rounded-circle" style="width: 10px; height: 10px;"></span>
                     </div>
                     <span class="d-none d-md-inline">
-                        <?= htmlspecialchars($admin['nombre'] . ' ' . $admin['apellidos']) ?>
+                        <?= htmlspecialchars($prof['nombre'] . ' ' . $prof['apellidos']) ?>
                     </span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-lg">
@@ -52,7 +52,8 @@
                     <li>
                         <hr class="dropdown-divider mx-3">
                     </li>
-                    <li><a class="dropdxºown-item text-danger" href="../controllers/logout.php"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a></li>
+                    <li><a class="dropdown-item text-danger" href="../../controllers/logout.php"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a></li>
+
                 </ul>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <?php
-require_once '../controllers/auth_check.php';
-require_once '../controllers/get_admin_data.php';
+require_once '../../controllers/auth_check.php';
+require_once '../../controllers/get_admin_data.php';
 
 $admin = getAdminData($conn, $_SESSION['user_id']);
 
@@ -8,7 +8,7 @@ if (!$admin) {
     die("Administrador no encontrado.");
 }
 
-include 'header.php';
+include '../header.php';
 ?>
 
 <body>
@@ -135,7 +135,7 @@ include 'header.php';
     </div>
 
     <?php
-    include 'modals/toast_notificacion.php';
+    include '../modals/toast_notificacion.php';
     ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -156,7 +156,7 @@ include 'header.php';
                 return;
             }
 
-            fetch(`../controllers/get_cursos_por_area.php?area_id=${areaId}`)
+            fetch(`../../controllers/get_cursos_por_area.php?area_id=${areaId}`)
                 .then(res => res.json())
                 .then(data => {
                     cursoSelect.innerHTML = '';
@@ -187,7 +187,7 @@ include 'header.php';
                 return;
             }
 
-            fetch(`../controllers/get_horarios.php?curso_id=${cursoId}`)
+            fetch(`../../controllers/get_horarios.php?curso_id=${cursoId}`)
                 .then(res => res.json())
                 .then(data => {
                     horarioSelect.innerHTML = '';
@@ -218,7 +218,7 @@ include 'header.php';
                 return;
             }
 
-            fetch('../controllers/insert_matricula.php', {
+            fetch('../../controllers/insert_matricula.php', {
                     method: 'POST',
                     body: new URLSearchParams({
                         alumno_id: alumnoId,
