@@ -42,21 +42,36 @@ include '../header.php';
                                             <!-- Total de alumno -->
                                             <span class="badge bg-info text-dark">Alumnos: <?= $row['total_alumnos'] ?></span>
                                         </div>
+
+
+
                                         <!-- Boton asignar -->
-                                        <div class="ms-auto">
-                                            <button
-                                                class="btn btn-primary"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modalAsistencia"
-                                                data-curso="<?= htmlspecialchars($row['nombre_curso']) ?>"
-                                                data-horario="<?= htmlspecialchars($row['dia']) . ' ' . $row['hora_inicio'] . ' - ' . $row['hora_fin'] ?>"
-                                                data-cursoid="<?= $row['curso_id'] ?>"
-                                                data-horarioid="<?= $row['horario_id'] ?>">
-                                                <i class="fas fa-check-circle me-1"></i> Asistencia
-                                            </button>
+                                        <div class="ms-auto d-flex flex-column gap-2">
+                                            <form action="prof_asistencia.php" method="POST">
+                                                <input type="hidden" name="nombre_curso" value="<?= htmlspecialchars($row['nombre_curso']) ?>">
+                                                <input type="hidden" name="horario_texto" value="<?= htmlspecialchars($row['dia'] . ' ' . $row['hora_inicio'] . ' - ' . $row['hora_fin']) ?>">
+                                                <input type="hidden" name="curso_id" value="<?= $row['curso_id'] ?>">
+                                                <input type="hidden" name="horario_id" value="<?= $row['horario_id'] ?>">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fas fa-check-circle me-1"></i> Asistencia
+                                                </button>
+                                            </form>
 
-
+                                            <form action="prof_notas.php" method="POST">
+                                                <input type="hidden" name="nombre_curso" value="<?= htmlspecialchars($row['nombre_curso']) ?>">
+                                                <input type="hidden" name="horario_texto" value="<?= htmlspecialchars($row['dia'] . ' ' . $row['hora_inicio'] . ' - ' . $row['hora_fin']) ?>">
+                                                <input type="hidden" name="curso_id" value="<?= $row['curso_id'] ?>">
+                                                <input type="hidden" name="horario_id" value="<?= $row['horario_id'] ?>">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fas fa-edit me-1"></i> Calificaciones
+                                                </button>
+                                            </form>
                                         </div>
+
+
+
+
+
                                     </div>
 
 
@@ -67,7 +82,9 @@ include '../header.php';
                         endwhile;
                     else:
                         ?>
-                        <p>No tienes cursos asignados actualmente.</p>
+                        <div class="alert alert-warning text-center m-3" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i> No tienes cursos asignados actualmente.
+                        </div>
                     <?php endif; ?>
                 </div>
             </main>
@@ -75,100 +92,28 @@ include '../header.php';
         </div>
     </div>
     <?php
-    include '../modals/modal_asistencias.php';
     include '../modals/toast_notificacion.php';
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('modalAsistencia');
-
-            modal.addEventListener('show.bs.modal', event => {
-                const button = event.relatedTarget;
-
-                const curso = button.getAttribute('data-curso');
-                const horario = button.getAttribute('data-horario');
-                const cursoId = button.getAttribute('data-cursoid');
-                const horarioId = button.getAttribute('data-horarioid');
-
-                document.getElementById('modalCursoNombre').textContent = curso;
-                document.getElementById('modalHorario').textContent = horario;
-                document.getElementById('curso_id').value = cursoId;
-                document.getElementById('horario_id').value = horarioId;
-
-                const tbody = document.getElementById('tablaAlumnos');
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Cargando...</td></tr>';
-
-                fetch(`../../controllers/get_alumnos_matriculados.php?curso_id=${cursoId}&horario_id=${horarioId}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        tbody.innerHTML = '';
-                        if (data.length === 0) {
-                            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No hay alumnos.</td></tr>';
-                        } else {
-                            data.forEach(alumno => {
-                                const row = `
-                            <tr>
-                                <td>${alumno.nombre}</td>
-                                <td class="text-center">
-                                    <input type="radio" name="asistencia[${alumno.id}]" value="Presente" required>
-                                </td>
-                                <td class="text-center">
-                                    <input type="radio" name="asistencia[${alumno.id}]" value="Ausente">
-                                </td>
-                                <td class="text-center">
-                                    <input type="radio" name="asistencia[${alumno.id}]" value="Justificado">
-                                </td>
-                            </tr>
-                        `;
-                                tbody.insertAdjacentHTML('beforeend', row);
-                            });
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error al cargar alumnos:', err);
-                        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Error al cargar.</td></tr>';
-                    });
-            });
-        });
-
-        document.getElementById('formAsistencia').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const form = e.target;
-            const formData = new FormData(form);
-
-            fetch('../../controllers/insert_asistencia.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        showNotification('Asistencia registrada correctamente', 'success', 'check-circle');
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('modalAsistencia'));
-                        modal.hide();
-                    } else {
-                        showNotification(data.error || 'No se pudo guardar', 'danger', 'exclamation-circle');
-                    }
-
-                })
-                .catch(err => {
-                    console.error('Error al enviar:', err);
-                    showNotification('Error de red o del servidor', 'danger', 'server');
-                });
+        window.addEventListener('DOMContentLoaded', () => {
+            const msgSuccess = sessionStorage.getItem('flash_success');
+            const msgWarning = sessionStorage.getItem('flash_warning');
+            if (msgSuccess) {
+                showNotification(msgSuccess, 'success', 'check-circle');
+                sessionStorage.removeItem('flash_success');
+            } else if (msgWarning) {
+                showNotification(msgWarning, 'warning', 'ban');
+                sessionStorage.removeItem('flash_warning');
+            }
         });
 
         function showNotification(message, type = 'success', icon = 'check-circle') {
             const toastEl = document.getElementById('liveToast');
             const toastHeader = toastEl.querySelector('.toast-header');
             const toastBody = toastEl.querySelector('.toast-body');
-
-            // Resetear clases anteriores
             toastHeader.className = 'toast-header';
             toastBody.className = 'toast-body';
-
-            // Aplicar estilo según tipo
             switch (type) {
                 case 'success':
                     toastHeader.classList.add('bg-success', 'text-white');
@@ -182,18 +127,13 @@ include '../header.php';
                 default:
                     toastHeader.classList.add('bg-primary', 'text-white');
             }
-
-            // Agregar contenido con ícono
             toastBody.innerHTML = `<i class="fas fa-${icon} me-2"></i> ${message}`;
-
-            // Mostrar el toast
             const toast = new bootstrap.Toast(toastEl);
             toast.show();
-
-            // Ocultar automáticamente en 5 segundos
             setTimeout(() => toast.hide(), 5000);
         }
     </script>
+
 
 
 

@@ -19,8 +19,8 @@ include 'views/header.php';
         <div class="overlay"></div>
 
         <div class="text-center bienvenido">
-            <h1 class="display-3 mb-4">Bienvenido a Cybertronic</h1>
-            <p class="lead mb-4">El Instituto Cybertronic ofrece educación de calidad en el ámbito tecnológico y más.</p>
+            <h1 class="display-3 mb-4">Bienvenido a Cibertronic</h1>
+            <p class="lead mb-4">El Instituto Cibertronic ofrece educación de calidad en el ámbito tecnológico y más.</p>
 
             <?php if (!empty($mensaje)): ?>
                 <div class="alert alert-warning"><?= $mensaje ?></div>

@@ -13,10 +13,9 @@
             $menu_items = [
                 'prof_dashboard.php'   => '<i class="fas fa-chalkboard-teacher me-2"></i> Inicio',
                 'prof_profile.php'     => '<i class="fas fa-user-circle me-2"></i> Mi Perfil',
-                // Futuras funcionalidades:
                 'prof_courses.php'   => '<i class="fas fa-book-open me-2"></i> Mis Cursos',
-                'prof_asistencia.php' => '<i class="fas fa-calendar-check me-2"></i> Asistencia',
-                'prof_notas.php'     => '<i class="fas fa-clipboard-list me-2"></i> Calificaciones',
+                'prof_asistencia_lista.php' => '<i class="fas fa-calendar-check me-2"></i> Asistencia',
+                'prof_notas_lista.php'     => '<i class="fas fa-clipboard-list me-2"></i> Calificaciones',
                 'prof_reportes.php'  => '<i class="fas fa-chart-line me-2"></i> Reportes'
             ];
 
