@@ -18,7 +18,7 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-6 col-lg-7 px-5 py-4">
+            <main class="col-md-7 col-lg-8 px-5 py-4">
                 <h4 class="text-primary mb-4"><i class="fas fa-calendar-check me-2"></i> Seleccionar Curso para Asistencia</h4>
 
                 <?php if ($cursos && $cursos->num_rows > 0): ?>
@@ -26,17 +26,24 @@ include '../header.php';
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-striped">
+
+                                    <!-- CABECERA DE LA TABLA -->
                                     <thead class="table-primary text-center">
                                         <tr>
+                                            <th>Código</th>
                                             <th>Curso</th>
                                             <th>Área</th>
                                             <th>Horario</th>
                                             <th>Acción</th>
                                         </tr>
                                     </thead>
+
+
                                     <tbody>
                                         <?php while ($row = $cursos->fetch_assoc()): ?>
+                                            <!-- CADA FILA EN EL WHILE -->
                                             <tr>
+                                                <td class="text-center"><?= htmlspecialchars($row['codigo_asignacion']) ?></td>
                                                 <td><?= htmlspecialchars($row['nombre_curso']) ?></td>
                                                 <td><?= htmlspecialchars($row['nombre_area']) ?></td>
                                                 <td><?= htmlspecialchars($row['dia']) . ' ' . $row['hora_inicio'] . ' - ' . $row['hora_fin'] ?></td>
@@ -46,13 +53,14 @@ include '../header.php';
                                                         <input type="hidden" name="horario_texto" value="<?= htmlspecialchars($row['dia'] . ' ' . $row['hora_inicio'] . ' - ' . $row['hora_fin']) ?>">
                                                         <input type="hidden" name="curso_id" value="<?= $row['curso_id'] ?>">
                                                         <input type="hidden" name="horario_id" value="<?= $row['horario_id'] ?>">
-
+                                                        <input type="hidden" name="codigo_asignacion" value="<?= $row['codigo_asignacion'] ?>">
                                                         <button type="submit" class="btn btn-outline-primary btn-sm">
                                                             <i class="fas fa-check-circle me-1"></i> Registrar Asistencia
                                                         </button>
                                                     </form>
                                                 </td>
                                             </tr>
+
                                         <?php endwhile; ?>
                                     </tbody>
                                 </table>

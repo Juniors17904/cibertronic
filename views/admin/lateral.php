@@ -14,7 +14,7 @@
                 'admin_dashboard.php'   => '<i class="fas fa-home me-2"></i> Página de la Institución',
                 'admin_profile.php'     => '<i class="fas fa-user me-2"></i> Mi Perfil',
                 'admin_ges_user.php'    => '<i class="fas fa-users me-2"></i> Gestión de Usuarios',
-                'admin_courses.php'     => '<i class="fas fa-book me-2"></i> Gestión de Cursos',
+                'admin_courses.php'     => '<i class="fas fa-book me-2"></i> Gestión de Asignaciones',
                 'admin_matriculas.php'  => '<i class="fas fa-user-check me-2"></i> Gestión de Matrículas', // NUEVO ENLACE
                 'admin_reports.php'     => '<i class="fas fa-chart-bar me-2"></i> Ver Reportes'
             ];

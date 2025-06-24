@@ -38,7 +38,7 @@ include 'header.php';
                         <button type="submit" name="logout" class="btn btn-danger">Cerrar sesión</button>
                     </form>
                 <?php else: ?>
-                    <div class="alert alert-danger text-center">No hay sesión activa.</div>
+                    <!-- <div class="alert alert-danger text-center">No hay sesión activa.</div> -->
                 <?php endif; ?>
 
                 <?php if (isset($_GET['error'])): ?>
@@ -50,7 +50,10 @@ include 'header.php';
                             echo "El acceso al panel de estudiantes aún no está disponible.";
                         } elseif ($_GET['error'] == 'contraseña_incorrecta') {
                             echo "Contraseña incorrecta.";
+                        } elseif ($_GET['error'] == 'inactividad') {
+                            echo "Sesión cerrada por inactividad. Vuelve a iniciar sesión.";
                         }
+
                         ?>
                     </div>
                 <?php endif; ?>

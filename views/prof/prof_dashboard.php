@@ -33,51 +33,72 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <!-- Contenido principal -->
-            <main class="col-md-8 col-lg-9 px-md-5 py-4">
+            <main class="col-md-7 col-lg-8 px-5 py-4">
                 <!-- Bienvenida -->
-                <div class="mb-4">
-                    <h2 class="mb-3 text-primary">Bienvenido, <?= htmlspecialchars($prof['nombre']) ?> </h2>
-                    <p class="text-muted">Este es tu panel de profesor. Desde aquí podrás ver la información relacionada a tus cursos, alumnos y clases.</p>
+                <div class="mb-5">
+                    <h2 class="mb-2 text-primary">Bienvenido, <?= htmlspecialchars($prof['nombre']) ?> </h2>
+                    <p class="text-muted fs-5">Este es tu panel de profesor. Desde aquí podrás ver la información relacionada a tus cursos, alumnos y clases.</p>
                 </div>
 
-                <!-- Tarjetas -->
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card bg-warning text-white shadow p-3">
-                            <h5 class="card-title"><i class="fas fa-book me-2"></i> Cursos Asignados</h5>
-                            <p class="card-text fs-4">
-
-                                <?php echo $cursos_total ?>
-
-                            </p>
-                            <a href="prof_courses.php" class="text-white">Ver cursos <i class="fas fa-arrow-right"></i></a>
+                <!-- Tarjetas principales -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card bg-warning text-white shadow h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-book me-2"></i> Cursos Asignados</h5>
+                                <p class="display-6 fw-bold"><?= $cursos_total ?></p>
+                                <a href="prof_courses.php" class="text-white text-decoration-underline">Ver cursos →</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="card bg-success text-white shadow p-3">
-                            <h5 class="card-title"><i class="fas fa-users me-2"></i> Total de Alumnos</h5>
-                            <p class="card-text fs-4">
-                                <?php echo $alumnos_total ?>
-                            </p>
-                            <a href="#" class="text-white">Ver lista <i class="fas fa-arrow-right"></i></a>
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card bg-success text-white shadow h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-users me-2"></i> Total de Alumnos</h5>
+                                <p class="display-6 fw-bold"><?= $alumnos_total ?></p>
+                                <a href="#" class="text-white text-decoration-underline">Ver lista →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xl-4">
+                        <div class="card bg-info text-white shadow h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-calendar-alt me-2"></i> Fecha Actual</h5>
+                                <p class="fs-4"><?= date('d/m/Y') ?></p>
+                                <span class="text-white-50">Hoy es <?= strftime('%A') ?></span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Misión institucional -->
-                <div class="row mb-5">
-                    <h4 class="mb-4 border-bottom pb-2 text-center">Acerca de Cibertronic</h4>
-                    <section class="mb-3">
-                        <h5><i class="bi bi-bullseye"></i> Misión</h5>
-                        <p>Brindar educación de calidad a nuestros alumnos mediante docentes comprometidos.</p>
-                    </section>
-                    <section class="mb-3">
-                        <h5><i class="bi bi-eye-fill"></i> Visión</h5>
-                        <p>Ser reconocidos como líderes en formación técnica con impacto social.</p>
-                    </section>
+                <!-- Misión y visión -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-center text-primary mb-3"><i class="bi bi-bullseye"></i> Misión</h5>
+                                <p class="card-text text-muted text-justify">
+                                    Brindar educación de calidad a nuestros alumnos mediante docentes comprometidos.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-center text-primary mb-3"><i class="bi bi-eye-fill"></i> Visión</h5>
+                                <p class="card-text text-muted text-justify">
+                                    Ser reconocidos como líderes en formación técnica con impacto social.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
+
+
+
         </div>
     </div>
 

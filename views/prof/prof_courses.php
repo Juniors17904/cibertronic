@@ -16,7 +16,7 @@ include '../header.php';
             <?php include 'lateral.php' ?>
 
             <!-- Contenido principal -->
-            <main class="col-md-6 col-lg-7 px-5 py-4">
+            <main class="col-md-7 col-lg-8 px-5 py-4">
                 <h3 class="mb-4 text-primary">Mis Cursos Asignados</h3>
                 <div class="row">
                     <?php
@@ -29,29 +29,29 @@ include '../header.php';
                             <div class="col-md-6 mb-4">
                                 <div class="card shadow border-0">
 
-                                    <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
-                                        <div>
-                                            <!--curso-->
-                                            <h5 class="card-title mb-3"><?= htmlspecialchars($row['nombre_curso']) ?></h5>
-                                            <!-- area -->
-                                            <h6 class="card-subtitle text-muted mb-2"><?= htmlspecialchars($row['nombre_area']) ?></h6>
-                                            <!--horario-->
-                                            <p class="card-text mb-2">
+                                    <div class="card-body d-flex flex-column">
+                                        <!-- Información del curso -->
+                                        <div class="mb-3">
+                                            <h5 class="card-title mb-2"><?= htmlspecialchars($row['nombre_curso']) ?></h5>
+
+                                            <div class="mb-1"><strong>Código:</strong> <?= htmlspecialchars($row['codigo_asignacion']) ?></div>
+                                            <div class="text-muted mb-1"><?= htmlspecialchars($row['nombre_area']) ?></div>
+                                            <div class="mb-1">
                                                 <strong>Horario:</strong> <?= $row['dia'] ?> <?= $row['hora_inicio'] ?> - <?= $row['hora_fin'] ?>
-                                            </p>
-                                            <!-- Total de alumno -->
-                                            <span class="badge bg-info text-dark">Alumnos: <?= $row['total_alumnos'] ?></span>
+                                            </div>
+                                            <div>
+                                                <span class="badge bg-info text-dark">Alumnos: <?= $row['total_alumnos'] ?></span>
+                                            </div>
                                         </div>
 
-
-
-                                        <!-- Boton asignar -->
-                                        <div class="ms-auto d-flex flex-column gap-2">
+                                        <!-- Botones -->
+                                        <div class="d-flex justify-content-end gap-2 mt-auto">
                                             <form action="prof_asistencia.php" method="POST">
                                                 <input type="hidden" name="nombre_curso" value="<?= htmlspecialchars($row['nombre_curso']) ?>">
                                                 <input type="hidden" name="horario_texto" value="<?= htmlspecialchars($row['dia'] . ' ' . $row['hora_inicio'] . ' - ' . $row['hora_fin']) ?>">
                                                 <input type="hidden" name="curso_id" value="<?= $row['curso_id'] ?>">
                                                 <input type="hidden" name="horario_id" value="<?= $row['horario_id'] ?>">
+                                                <input type="hidden" name="codigo_asignacion" value="<?= $row['codigo_asignacion'] ?>">
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="fas fa-check-circle me-1"></i> Asistencia
                                                 </button>
@@ -67,12 +67,8 @@ include '../header.php';
                                                 </button>
                                             </form>
                                         </div>
-
-
-
-
-
                                     </div>
+
 
 
                                 </div>

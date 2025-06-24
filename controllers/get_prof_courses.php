@@ -4,6 +4,7 @@ function getCursosAsignados($conn, $usuario_id)
     $query = "
         SELECT 
             a.id AS asignacion_id,                 -- ID único de la asignación
+            a.codigo_asignacion,                   -- codigo de asignacion
             c.nombre_curso,                        -- Nombre del curso desde la tabla 'cursos'
             ar.nombre_area,                        -- Nombre del área desde la tabla 'areas'
             h.dia,                                 -- Día desde la tabla 'horarios'

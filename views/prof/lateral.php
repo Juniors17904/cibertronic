@@ -10,21 +10,34 @@
         <ul class="nav flex-column">
             <?php
             $current_page = basename($_SERVER['PHP_SELF']);
+            $asistencia_pages = ['prof_asistencia_lista.php', 'prof_asistencia.php'];
+            $notas_pages = ['prof_notas_lista.php', 'prof_notas.php'];
+            $reporte_pages = ['prof_reportes.php', 'prof_reportesAs.php', 'prof_reportesNt.php'];
+
             $menu_items = [
-                'prof_dashboard.php'   => '<i class="fas fa-chalkboard-teacher me-2"></i> Inicio',
-                'prof_profile.php'     => '<i class="fas fa-user-circle me-2"></i> Mi Perfil',
-                'prof_courses.php'   => '<i class="fas fa-book-open me-2"></i> Mis Cursos',
+                'prof_dashboard.php'        => '<i class="fas fa-chalkboard-teacher me-2"></i> Inicio',
+                'prof_profile.php'          => '<i class="fas fa-user-circle me-2"></i> Mi Perfil',
+                'prof_courses.php'          => '<i class="fas fa-book-open me-2"></i> Mis Cursos',
                 'prof_asistencia_lista.php' => '<i class="fas fa-calendar-check me-2"></i> Asistencia',
-                'prof_notas_lista.php'     => '<i class="fas fa-clipboard-list me-2"></i> Calificaciones',
-                'prof_reportes.php'  => '<i class="fas fa-chart-line me-2"></i> Reportes'
+                'prof_notas_lista.php'      => '<i class="fas fa-clipboard-list me-2"></i> Calificaciones',
+                'prof_reportes.php'         => '<i class="fas fa-chart-line me-2"></i> Reportes'
             ];
 
             foreach ($menu_items as $page => $title) {
-                $active_class = ($current_page == $page) ? 'active bg-primary' : '';
+                if ($page === 'prof_asistencia_lista.php') {
+                    $active_class = in_array($current_page, $asistencia_pages) ? 'active bg-primary' : '';
+                } elseif ($page === 'prof_notas_lista.php') {
+                    $active_class = in_array($current_page, $notas_pages) ? 'active bg-primary' : '';
+                } elseif ($page === 'prof_reportes.php') {
+                    $active_class = in_array($current_page, $reporte_pages) ? 'active bg-primary' : '';
+                } else {
+                    $active_class = ($current_page == $page) ? 'active bg-primary' : '';
+                }
+
                 echo '<li class="nav-item my-1">
                         <a class="nav-link text-white ' . $active_class . ' rounded-3 px-3 py-2" 
-                            href="' . $page . '">
-                            ' . $title . '
+                        href="' . $page . '">
+                        ' . $title . '
                         </a>
                     </li>';
             }

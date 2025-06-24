@@ -7,11 +7,26 @@ if (!$prof) {
     die("Profesor no encontrado.");
 }
 
-
 $nombre_curso = $_POST['nombre_curso'] ?? '';
 $horario_texto = $_POST['horario_texto'] ?? '';
 $curso_id = $_POST['curso_id'] ?? null;
 $horario_id = $_POST['horario_id'] ?? null;
+
+
+// Obtener código de asignación
+$codigo_asignacion = '';
+$sql = "SELECT codigo_asignacion FROM asignaciones WHERE curso_id = ? AND horario_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $curso_id, $horario_id);
+$stmt->execute();
+$res = $stmt->get_result();
+if ($row = $res->fetch_assoc()) {
+    $codigo_asignacion = $row['codigo_asignacion'];
+}
+$stmt->close();
+
+
+
 
 if (!$curso_id || !$horario_id) {
     die("Faltan datos.");
@@ -25,12 +40,14 @@ include '../header.php';
     <div class="container-fluid mt-0">
         <div class="row">
             <?php include 'lateral.php'; ?>
-            <main class="col-md-6 col-lg-7 px-5 py-4">
+            <main class="col-md-7 col-lg-8 px-5 py-4">
                 <h3 class="text-primary mb-4"><i class="fas fa-clipboard-check me-2"></i>Registrar Asistencia</h3>
                 <div class="card shadow border-0 mb-4">
                     <div class="card-body">
                         <p><strong>Curso:</strong> <?= htmlspecialchars($nombre_curso) ?></p>
                         <p><strong>Horario:</strong> <?= htmlspecialchars($horario_texto) ?></p>
+                        <p><strong>Código de Asignación:</strong> <?= htmlspecialchars($codigo_asignacion) ?></p>
+
 
                         <form id="formAsistencia" method="POST">
                             <div class="row mb-3">
@@ -79,31 +96,57 @@ include '../header.php';
         document.addEventListener('DOMContentLoaded', () => {
             const cursoId = document.getElementById('curso_id').value;
             const horarioId = document.getElementById('horario_id').value;
+            const fechaInput = document.getElementById('fechaAsistencia');
             const tbody = document.getElementById('tablaAlumnos');
 
-            fetch(`../../controllers/get_alumnos_matriculados.php?curso_id=${cursoId}&horario_id=${horarioId}`)
-                .then(res => res.json())
-                .then(data => {
-                    tbody.innerHTML = '';
-                    if (data.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No hay alumnos.</td></tr>';
-                    } else {
-                        data.forEach(alumno => {
-                            const row = `
-                        <tr>
-                            <td>${alumno.nombre}</td>
-                            <td class="text-center"><input type="radio" name="asistencia[${alumno.id}]" value="Presente" required></td>
-                            <td class="text-center"><input type="radio" name="asistencia[${alumno.id}]" value="Ausente"></td>
-                            <td class="text-center"><input type="radio" name="asistencia[${alumno.id}]" value="Justificado"></td>
-                        </tr>`;
-                            tbody.insertAdjacentHTML('beforeend', row);
-                        });
-                    }
-                })
-                .catch(() => {
-                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Error al cargar.</td></tr>';
-                });
+            function cargarAlumnos(fecha) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Cargando...</td></tr>';
 
+                fetch(`../../controllers/get_asistencia_fecha.php?curso_id=${cursoId}&horario_id=${horarioId}&fecha=${fecha}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        tbody.innerHTML = '';
+                        if (data.length === 0) {
+                            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No hay alumnos.</td></tr>';
+                        } else {
+                            data.forEach(alumno => {
+                                const estado = alumno.estado || '';
+                                const checked = (valor) => estado === valor ? 'checked' : '';
+
+                                let icono = '';
+                                if (estado === 'Presente') {
+                                    icono = `<i class="fas fa-check-circle text-success ms-2" title="Presente"></i>`;
+                                } else if (estado === 'Ausente') {
+                                    icono = `<i class="fas fa-times-circle text-danger ms-2" title="Ausente"></i>`;
+                                } else if (estado === 'Justificado') {
+                                    icono = `<i class="fas fa-file-alt text-warning ms-2" title="Justificado"></i>`;
+                                }
+
+                                const row = `
+                            <tr>
+                                <td>${alumno.nombre}${icono}</td>
+                                <td class="text-center"><input type="radio" name="asistencia[${alumno.id}]" value="Presente" ${checked('Presente')} required></td>
+                                <td class="text-center"><input type="radio" name="asistencia[${alumno.id}]" value="Ausente" ${checked('Ausente')}></td>
+                                <td class="text-center"><input type="radio" name="asistencia[${alumno.id}]" value="Justificado" ${checked('Justificado')}></td>
+                            </tr>`;
+                                tbody.insertAdjacentHTML('beforeend', row);
+                            });
+                        }
+                    })
+                    .catch(() => {
+                        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Error al cargar.</td></tr>';
+                    });
+            }
+
+            // Cargar asistencia al iniciar
+            cargarAlumnos(fechaInput.value);
+
+            // Actualizar si cambia la fecha
+            fechaInput.addEventListener('change', () => {
+                cargarAlumnos(fechaInput.value);
+            });
+
+            // Enviar formulario
             document.getElementById('formAsistencia').addEventListener('submit', function(e) {
                 e.preventDefault();
                 const formData = new FormData(this);
@@ -114,7 +157,7 @@ include '../header.php';
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            sessionStorage.setItem('flash_success', 'Asistencia registrada correctamente');
+                            sessionStorage.setItem('flash_success', 'Asistencia guardada correctamente');
                             window.location.href = 'prof_courses.php';
                         } else {
                             showNotification(data.error || 'No se pudo guardar', 'danger', 'exclamation-circle');
@@ -125,17 +168,21 @@ include '../header.php';
                     });
             });
 
+            // Cancelar
             document.getElementById('btnCancelar').addEventListener('click', () => {
                 sessionStorage.setItem('flash_warning', 'Acción cancelada por el usuario');
                 window.location.href = 'prof_courses.php';
             });
 
+            // Toast Bootstrap
             function showNotification(message, type = 'success', icon = 'check-circle') {
                 const toastEl = document.getElementById('liveToast');
                 const toastHeader = toastEl.querySelector('.toast-header');
                 const toastBody = toastEl.querySelector('.toast-body');
+
                 toastHeader.className = 'toast-header';
                 toastBody.className = 'toast-body';
+
                 switch (type) {
                     case 'success':
                         toastHeader.classList.add('bg-success', 'text-white');
@@ -149,6 +196,7 @@ include '../header.php';
                     default:
                         toastHeader.classList.add('bg-primary', 'text-white');
                 }
+
                 toastBody.innerHTML = `<i class="fas fa-${icon} me-2"></i> ${message}`;
                 const toast = new bootstrap.Toast(toastEl);
                 toast.show();
@@ -156,6 +204,8 @@ include '../header.php';
             }
         });
     </script>
+
+
 </body>
 
 </html>

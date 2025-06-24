@@ -11,6 +11,8 @@ $nombre_curso = $_POST['nombre_curso'] ?? '';
 $horario_texto = $_POST['horario_texto'] ?? '';
 $curso_id = $_POST['curso_id'] ?? null;
 $horario_id = $_POST['horario_id'] ?? null;
+$codigo_asignacion = $_POST['codigo_asignacion'] ?? '';
+
 
 if (!$curso_id || !$horario_id) {
     die("Faltan datos.");
@@ -25,27 +27,28 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-6 col-lg-7 px-5 py-4">
+            <main class="col-md-7 col-lg-8 px-5 py-4">
                 <h3 class="text-primary mb-4"><i class="fas fa-clipboard me-2"></i>Registro de Notas</h3>
 
                 <div class="card shadow border-0 mb-4">
                     <div class="card-body">
                         <p><strong>Curso:</strong> <?= htmlspecialchars($nombre_curso) ?></p>
                         <p><strong>Horario:</strong> <?= htmlspecialchars($horario_texto) ?></p>
+                        <p><strong>Código de Asignación:</strong> <?= htmlspecialchars($codigo_asignacion) ?></p>
 
                         <form id="formNotas" method="POST">
                             <input type="hidden" name="curso_id" id="curso_id" value="<?= $curso_id ?>">
                             <input type="hidden" name="horario_id" id="horario_id" value="<?= $horario_id ?>">
 
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered align-middle">
                                     <thead class="table-info text-center">
                                         <tr>
                                             <th>Alumno</th>
-                                            <th>Nota 1</th>
-                                            <th>Nota 2</th>
-                                            <th>Nota 3</th>
-                                            <th>Promedio</th>
+                                            <th>Examen 1</th>
+                                            <th>Examen 2</th>
+                                            <th>Examen 3</th>
+                                            <th>Promedio General</th>
                                             <th>Estado</th>
                                         </tr>
                                     </thead>
@@ -61,7 +64,8 @@ include '../header.php';
                                 <button type="submit" class="btn btn-success">
                                     <i class="fas fa-save me-1"></i> Guardar Notas
                                 </button>
-                                <a href="prof_courses.php" class="btn btn-secondary">Cancelar</a>
+                                <button type="button" id="btnCancelar" class="btn btn-secondary">Cancelar</button>
+
                             </div>
                         </form>
                     </div>
@@ -86,19 +90,66 @@ include '../header.php';
                         tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No hay alumnos.</td></tr>';
                     } else {
                         data.forEach(alumno => {
+                            const n1 = alumno.n1 !== null ? alumno.n1 : '';
+                            const n2 = alumno.n2 !== null ? alumno.n2 : '';
+                            const n3 = alumno.n3 !== null ? alumno.n3 : '';
+
                             const row = `
                         <tr>
                             <td>${alumno.nombre}</td>
-                            <td><input type="number" class="form-control" name="notas[${alumno.id}][n1]" min="0" max="20"></td>
-                            <td><input type="number" class="form-control" name="notas[${alumno.id}][n2]" min="0" max="20"></td>
-                            <td><input type="number" class="form-control" name="notas[${alumno.id}][n3]" min="0" max="20"></td>
-                            <td class="text-center text-secondary">-</td>
-                            <td class="text-center text-secondary">-</td>
+                            <td><input type="number" class="form-control nota" name="notas[${alumno.id}][n1]" value="${n1}" placeholder="--" min="0" max="20"></td>
+                            <td><input type="number" class="form-control nota" name="notas[${alumno.id}][n2]" value="${n2}" placeholder="--" min="0" max="20"></td>
+                            <td><input type="number" class="form-control nota" name="notas[${alumno.id}][n3]" value="${n3}" placeholder="--" min="0" max="20"></td>
+                            <td class="text-center promedio">-</td>
+                            <td class="text-center estado">-</td>
                         </tr>`;
                             tbody.insertAdjacentHTML('beforeend', row);
                         });
+
+                        calcularPromedios();
+                        tbody.querySelectorAll('.nota').forEach(input => {
+                            input.addEventListener('input', calcularPromedios);
+                        });
                     }
                 });
+
+            function calcularPromedios() {
+                tbody.querySelectorAll('tr').forEach(fila => {
+                    const inputs = fila.querySelectorAll('.nota');
+                    let suma = 0;
+                    let count = 0;
+
+                    inputs.forEach(input => {
+                        const val = parseFloat(input.value);
+                        if (!isNaN(val)) {
+                            suma += val;
+                            count++;
+                        }
+                    });
+
+                    const promedioEl = fila.querySelector('.promedio');
+                    const estadoEl = fila.querySelector('.estado');
+
+                    if (count === 0) {
+                        promedioEl.textContent = '--';
+                        estadoEl.textContent = '--';
+                        estadoEl.className = 'text-center estado text-secondary';
+                    } else {
+                        const promedio = (suma / 3).toFixed(2);
+                        promedioEl.textContent = promedio;
+                        if (promedio == 0.00) {
+                            estadoEl.textContent = 'Pendiente';
+                            estadoEl.className = 'text-center estado text-warning';
+                        } else if (promedio >= 11) {
+                            estadoEl.textContent = 'Aprobado';
+                            estadoEl.className = 'text-center estado text-success';
+                        } else {
+                            estadoEl.textContent = 'Desaprobado';
+                            estadoEl.className = 'text-center estado text-danger';
+                        }
+                    }
+                });
+            }
 
             document.getElementById('formNotas').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -147,8 +198,21 @@ include '../header.php';
                 toastBody.innerHTML = `<i class="fas fa-${icon} me-2"></i> ${message}`;
                 new bootstrap.Toast(toastEl).show();
             }
+
+            // Cancelar
+            document.getElementById('btnCancelar').addEventListener('click', () => {
+                sessionStorage.setItem('flash_warning', 'Acción cancelada por el usuario');
+                window.location.href = 'prof_courses.php';
+            });
+
+
+
+
+
+
         });
     </script>
+
 </body>
 
 </html>
