@@ -22,7 +22,7 @@ $estado = $_GET['estado'] ?? '';
     <div class="container-fluid mt-0">
         <div class="row">
             <?php include 'lateral.php' ?>
-            <main class="col-md-7 col-lg-9 px-2 px-md-5">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5">
                 <div class="container-fluid p-4">
                     <?php
                     try {
