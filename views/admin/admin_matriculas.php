@@ -88,12 +88,12 @@ include '../header.php';
                                 <table class="table table-striped table-hover text-center">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>#</th>
-                                            <th>Código de Matrícula</th>
+                                            <th class="d-none d-md-table-cell">#</th>
+                                            <th class="d-none d-lg-table-cell">Código de Matrícula</th>
                                             <th>Código Alumno</th>
                                             <th>Nombres y Apellidos</th>
                                             <th>Curso</th>
-                                            <th>Fecha Matrícula</th>
+                                            <th class="d-none d-md-table-cell">Fecha Matrícula</th>
                                             <th>Detalles</th>
                                         </tr>
                                     </thead>
@@ -101,12 +101,12 @@ include '../header.php';
                                         <?php $n = 1;
                                         while ($row = $matriculas->fetch_assoc()): ?>
                                             <tr>
-                                                <td><?= $n++ ?></td>
-                                                <td><?= htmlspecialchars($row['codigo_matricula']) ?></td>
+                                                <td class="d-none d-md-table-cell"><?= $n++ ?></td>
+                                                <td class="d-none d-lg-table-cell"><?= htmlspecialchars($row['codigo_matricula']) ?></td>
                                                 <td><?= htmlspecialchars($row['alumno_id']) ?></td>
                                                 <td><?= htmlspecialchars($row['nombre'] . ' ' . $row['apellidos']) ?></td>
                                                 <td><?= htmlspecialchars($row['nombre_curso']) ?></td>
-                                                <td><?= htmlspecialchars($row['fecha_matricula']) ?></td>
+                                                <td class="d-none d-md-table-cell"><?= htmlspecialchars($row['fecha_matricula']) ?></td>
                                                 <td>
                                                     <a href="admin_matriculas_detalles.php?matricula_id=<?= $row['matricula_id'] ?>" class="btn btn-outline-success btn-sm">
                                                         <i class="fas fa-eye"></i>
