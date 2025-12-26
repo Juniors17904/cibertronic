@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(dir /b \"c:\\\\xampp\\\\htdocs\\\\CIBERTRO\")",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(find:*)"
     ]
   }
 }

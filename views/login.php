@@ -14,16 +14,16 @@ include 'header.php';
 ?>
 
 <body style="background-color:rgb(248, 249, 250);">
-    <div class="container vh-100 d-flex">
+    <div class="container vh-100 d-flex px-2 px-md-3">
         <div class="row justify-content-center align-items-center flex-grow-1 w-100">
 
-            <!-- Columna de la imagen -->
-            <div class="col-md-6 d-flex justify-content-center">
+            <!-- Columna de la imagen (oculta en móvil) -->
+            <div class="col-md-6 d-none d-md-flex justify-content-center">
                 <img src="../assets/images/login.jpg" alt="Equipo de Cibertronic" class="img-fluid rounded shadow" />
             </div>
 
             <!-- Columna del formulario -->
-            <div class="col-md-6 d-flex flex-column justify-content-center">
+            <div class="col-12 col-md-6 d-flex flex-column justify-content-center px-2 px-md-4">
                 <!-- Logo oficial de Cibertronic -->
                 <div class="text-center mb-4">
                     <img src="../assets/images/Cibertro.png" alt="Logo Instituto Cibertronic"
