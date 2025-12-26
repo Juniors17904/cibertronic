@@ -44,7 +44,7 @@ $alumnos = $conn->query("
         <div class="row">
             <?php include 'lateral.php'; ?>
             <!-- <main class="col-md-7 col-lg-8 px-5"> -->
-            <main class="col-md-8 col-lg-9 px-md-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
 
 
 

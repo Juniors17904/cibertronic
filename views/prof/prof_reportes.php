@@ -17,7 +17,7 @@ include '../header.php';
 
             <!-- Contenido principal -->
             <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
-            <main class="col-md-8 col-lg-9 px-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
                 <h4 class="mb-4 text-primary fw-bold">Panel de Reportes</h4>
 
                 <div class="row g-4">

@@ -17,7 +17,7 @@ include '../header.php';
 
             <!-- Contenido principal -->
             <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
-            <main class="col-md-8 col-lg-9 px-md-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
                 <h3 class="mb-4 text-primary">Mis Cursos Asignados</h3>
                 <div class="row">
                     <?php

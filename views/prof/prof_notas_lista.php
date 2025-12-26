@@ -19,15 +19,17 @@ $result = getCursosAsignados($conn, $_SESSION['user_id']);
             <?php include 'lateral.php'; ?>
 
             <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
-            <main class="col-md-8 col-lg-9 px-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
 
                 <h4 class="mb-4 text-success"><i class="fas fa-graduation-cap me-2"></i>Seleccionar Curso para Registrar Notas</h4>
 
                 <?php if ($result && $result->num_rows > 0): ?>
                     <div class="card shadow border-0">
                         <div class="card-body p-0">
-                            <table class="table table-striped">
-                                <thead class="table-success text-center">
+                            <div class="mx-n3 mx-md-0">
+                                <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
+                                    <table class="table table-striped table-sm mb-0">
+                                        <thead class="table-success text-center sticky-top">
                                     <tr>
                                         <th>Código</th>
                                         <th>Curso</th>
@@ -60,7 +62,9 @@ $result = getCursosAsignados($conn, $_SESSION['user_id']);
 
                                     <?php endwhile; ?>
                                 </tbody>
-                            </table>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <?php else: ?>

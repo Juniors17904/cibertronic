@@ -19,7 +19,7 @@ include '../header.php';
 
 
             <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
-            <main class="col-md-8 col-lg-9 px-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
 
                 <div class="card shadow-lg rounded mb-4">
                     <div class="card-header bg-primary text-white">

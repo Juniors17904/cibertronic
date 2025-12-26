@@ -29,7 +29,7 @@ include '../header.php';
 
 
             <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
-            <main class="col-md-8 col-lg-9 px-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
 
                 <h3 class="text-primary mb-4"><i class="fas fa-clipboard me-2"></i>Registro de Notas</h3>
 

@@ -55,7 +55,7 @@ include '../header.php';
     <div class="container-fluid mt-0">
         <div class="row">
             <?php include 'lateral.php'; ?>
-            <main class="col-md-8 col-lg-9 px-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
 
                 <!-- 📌 Detalles de la Asignación -->
                 <div class="card shadow mb-4">

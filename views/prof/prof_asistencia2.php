@@ -41,7 +41,7 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
             <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
-            <main class="col-md-8 col-lg-9 px-md-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
                 <h3 class="text-primary mb-4"><i class="fas fa-clipboard-check me-2"></i>Registrar Asistencia</h3>
                 <div class="card shadow border-0 mb-4">
                     <div class="card-body">

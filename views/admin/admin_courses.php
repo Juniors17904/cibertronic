@@ -54,7 +54,7 @@ $horario_id = $_GET['horario_id'] ?? '';
                         ?>
 
                         <!-- Tarjeta resumen -->
-                        <div class="card border-primary shadow mb-4 w-50 text-center">
+                        <div class="card border-primary shadow mb-4 w-100 w-md-50 text-center">
                             <div class="card-body d-flex align-items-center">
                                 <i class="fas fa-tasks fa-2x text-primary me-3"></i>
                                 <div>
