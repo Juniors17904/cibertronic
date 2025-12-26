@@ -90,8 +90,8 @@ $alumnos = $conn->query("
                     <div class="card-body">
                         <?php if ($alumnos->num_rows > 0): ?>
                             <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                                <table class="table table-striped">
-                                    <thead class="table-light">
+                                <table class="table table-striped table-hover text-center table-sm mb-0">
+                                    <thead class="table-light sticky-top">
                                         <tr>
                                             <th>#</th>
                                             <th>Nombre</th>

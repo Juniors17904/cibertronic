@@ -61,7 +61,7 @@ include '../header.php';
                             <input type="hidden" name="horario_id" id="horario_id" value="<?= $horario_id ?>">
 
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                                <table class="table table-bordered align-middle">
+                                <table class="table table-striped table-hover text-center table-sm mb-0">
 
 
                                     <thead class="table-success text-center sticky-top">

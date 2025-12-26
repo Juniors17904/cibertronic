@@ -70,7 +70,7 @@ include '../header.php';
                         <!-- Tabla -->
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover text-center">
-                                <thead class="table-light">
+                                <thead class="table-light sticky-top">
                                     <tr>
                                         <th>Código</th>
                                         <th>Curso</th>

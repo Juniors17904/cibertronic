@@ -49,8 +49,8 @@ include '../header.php';
                             <input type="hidden" name="codigo_asignacion" value="<?= htmlspecialchars($codigo_asignacion) ?>">
 
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                                <table class="table table-bordered align-middle">
-                                    <thead class="table-info text-center">
+                                <table class="table table-striped table-hover text-center table-sm mb-0">
+                                    <thead class="table-light sticky-top text-center">
                                         <tr>
                                             <th>Alumno</th>
                                             <th>Examen 1</th>

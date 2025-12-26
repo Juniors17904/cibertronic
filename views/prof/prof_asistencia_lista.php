@@ -26,10 +26,10 @@ include '../header.php';
                     <div class="card shadow border-0">
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-striped">
+                                <table class="table table-striped table-hover text-center table-sm mb-0">
 
                                     <!-- CABECERA DE LA TABLA -->
-                                    <thead class="table-primary text-center">
+                                    <thead class="table-light sticky-top text-center">
                                         <tr>
                                             <th>Código</th>
                                             <th>Curso</th>

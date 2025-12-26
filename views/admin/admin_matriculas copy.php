@@ -108,7 +108,7 @@ include '../header.php';
 
 
                                 <table class="table table-striped table-hover text-center">
-                                    <thead class="table-light">
+                                    <thead class="table-light sticky-top">
                                         <tr>
                                             <th>#</th>
                                             <th>Codigo de Matricula</th>

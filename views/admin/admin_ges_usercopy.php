@@ -126,8 +126,8 @@ $estado = $_GET['estado'] ?? '';
 
                             <!-- Tabla -->
                             <div class="table-responsive" style=" max-height: 500px; overflow-y: auto;">
-                                <table class="table table-striped table-hover align-middle">
-                                    <thead class="table-light">
+                                <table class="table table-striped table-hover text-center table-sm mb-0">
+                                    <thead class="table-light sticky-top">
                                         <tr>
                                             <th></th>
                                             <th>Código Usuario</th>
