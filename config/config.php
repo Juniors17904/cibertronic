@@ -5,6 +5,12 @@ date_default_timezone_set('America/Lima'); // ✅ Zona horaria correcta para Per
 if ($_SERVER['SERVER_NAME'] == '192.168.1.102' || $_SERVER['SERVER_NAME'] == 'localhost') {
     // Entorno local de desarrollo
     define('BASE_URL', 'http://192.168.1.102:81/cibertro');
+    define('IS_LOCAL', true);
+
+    // Desactivar caché en desarrollo
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Pragma: no-cache");
+    header("Expires: 0");
 
     // Base de datos local
     $host = "localhost";
@@ -14,6 +20,7 @@ if ($_SERVER['SERVER_NAME'] == '192.168.1.102' || $_SERVER['SERVER_NAME'] == 'lo
 } else {
     // Entorno de producción
     define('BASE_URL', 'http://cibertronic.infinityfree.me');
+    define('IS_LOCAL', false);
 
     // Base de datos producción
     $host = "sql105.infinityfree.com";
