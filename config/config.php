@@ -8,7 +8,7 @@ if ($_SERVER['SERVER_NAME'] == '192.168.1.102' || $_SERVER['SERVER_NAME'] == 'lo
 
     // Base de datos local
     $host = "localhost";
-    $dbname = "cibertronic";
+    $dbname = "cibertronicbd";
     $username = "root";
     $password = "";
 } else {
