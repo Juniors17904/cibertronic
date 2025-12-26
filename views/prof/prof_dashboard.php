@@ -33,7 +33,8 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-7 col-lg-8 px-5 py-4">
+            <main class="col-md-8 col-lg-9 px-md-5 py-4">
+
                 <!-- Bienvenida -->
                 <div class="mb-5">
                     <h2 class="mb-2 text-primary">Bienvenido, <?= htmlspecialchars($prof['nombre']) ?> </h2>

@@ -1,16 +1,16 @@
 <?php
-// Configuración para la conexión a la base de datos
-$host = "localhost";          // El servidor donde se encuentra la base de datos
-$dbname = "cibertronicbd";   // Nombre de la base de datos
-$username = "root";           // Usuario para la conexión a la base de datos
-$password = "";               // Contraseña (si es que tiene)
+date_default_timezone_set('America/Lima'); // ✅ Zona horaria correcta para Perú
 
-// Crear la conexión con la base de datos
+// Configuración para la conexión a la base de datos
+$host = "localhost";
+$dbname = "cibertronicbd";
+$username = "root";
+$password = "";
+
+// Crear conexión
 $conn = new mysqli($host, $username, $password, $dbname);
 
-// Verificar la conexión
+// Verificar conexión
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
-} else {
-    // echo "conectado";
 }

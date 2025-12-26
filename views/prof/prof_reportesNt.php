@@ -18,7 +18,9 @@ include '../header.php';
 
 
 
-            <main class="col-md-7 col-lg-8 px-5 py-4">
+            <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
+            <main class="col-md-8 col-lg-9 px-5 py-4">
+
                 <div class="card shadow-lg rounded mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">Reporte de Notas</h5>
@@ -99,6 +101,8 @@ include '../header.php';
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const tabla = document.getElementById('tablaNotas');
@@ -111,6 +115,19 @@ include '../header.php';
             let datos = [],
                 paginaActual = 1,
                 filasPorPagina = 10;
+
+            // ✅ Formato de nota individual (puede tener 1 decimal)
+            function formatearNota(nota) {
+                if (nota === '' || isNaN(nota)) return '--';
+                const val = parseFloat(nota);
+                return val % 1 === 0 ? val.toFixed(0) : val.toFixed(1);
+            }
+
+            // ✅ Promedio redondeado sin decimales
+            function formatearPromedio(n1, n2, n3) {
+                const promedio = Math.round((n1 + n2 + n3) / 3);
+                return isNaN(promedio) ? '--' : promedio.toString();
+            }
 
             fetch(`../../controllers/get_historial_notas.php?profesor_id=<?= $prof['id'] ?>`)
                 .then(res => res.json())
@@ -142,12 +159,11 @@ include '../header.php';
                     const n1 = parseFloat(d.nota_01) || 0;
                     const n2 = parseFloat(d.nota_02) || 0;
                     const n3 = parseFloat(d.nota_03) || 0;
-                    const promedio = ((n1 + n2 + n3) / 3).toFixed(2);
+                    const promedio = Math.round((n1 + n2 + n3) / 3);
                     let resultado = '--';
-                    if (promedio === '0.00') resultado = 'pendiente';
+                    if (promedio === 0) resultado = 'pendiente';
                     else resultado = promedio >= 11 ? 'aprobado' : 'Desaprobado';
                     const resultadoOK = !resultadoFiltro || resultado.toLowerCase() === resultadoFiltro;
-
 
                     return cursoOK && alumnoOK && textoOK && resultadoOK;
                 });
@@ -170,10 +186,10 @@ include '../header.php';
                     const n1 = parseFloat(d.nota_01) || 0;
                     const n2 = parseFloat(d.nota_02) || 0;
                     const n3 = parseFloat(d.nota_03) || 0;
-                    const promedio = ((n1 + n2 + n3) / 3).toFixed(2);
+                    const promedio = Math.round((n1 + n2 + n3) / 3);
                     let resultado = '--',
                         color = 'secondary';
-                    if (promedio === '0.00') {
+                    if (promedio === 0) {
                         resultado = 'Pendiente';
                         color = 'warning';
                     } else if (promedio >= 11) {
@@ -189,9 +205,9 @@ include '../header.php';
                     <td>${d.codigo_asignacion}</td>
                     <td>${d.asignatura}</td>
                     <td>${d.nombre_alumno} ${d.apellidos_alumno}</td>
-                    <td>${d.nota_01}</td>
-                    <td>${d.nota_02}</td>
-                    <td>${d.nota_03}</td>
+                    <td>${formatearNota(d.nota_01)}</td>
+                    <td>${formatearNota(d.nota_02)}</td>
+                    <td>${formatearNota(d.nota_03)}</td>
                     <td>${promedio}</td>
                     <td><span class="badge bg-${color}">${resultado}</span></td>
                 </tr>`;
@@ -240,9 +256,32 @@ include '../header.php';
             resultadoSelect.addEventListener('change', aplicarFiltros);
             buscador.addEventListener('input', aplicarFiltros);
 
+            // Exportar a Excel
             document.getElementById('btnExportar').addEventListener('click', () => {
-                const filas = document.querySelectorAll('#tablaNotas tr');
-                if (!filas.length || filas[0].children.length !== 8) {
+                const curso = cursoSelect.value.toLowerCase().trim();
+                const alumno = alumnoSelect.value.toLowerCase().trim();
+                const texto = buscador.value.trim().toLowerCase();
+                const resultadoFiltro = resultadoSelect.value.toLowerCase().trim();
+
+                let filtrados = datos.filter(d => {
+                    const nombreCompleto = `${d.nombre_alumno} ${d.apellidos_alumno}`.toLowerCase().trim();
+                    const cursoOK = !curso || d.asignatura.toLowerCase().trim() === curso;
+                    const alumnoOK = !alumno || nombreCompleto === alumno;
+                    const textoOK = !texto || `${nombreCompleto} ${d.asignatura} ${d.codigo_asignacion}`.includes(texto);
+
+                    const n1 = parseFloat(d.nota_01) || 0;
+                    const n2 = parseFloat(d.nota_02) || 0;
+                    const n3 = parseFloat(d.nota_03) || 0;
+                    const promedio = Math.round((n1 + n2 + n3) / 3);
+                    let resultado = '--';
+                    if (promedio === 0) resultado = 'Pendiente';
+                    else if (promedio >= 11) resultado = 'Aprobado';
+                    else resultado = 'Desaprobado';
+
+                    return cursoOK && alumnoOK && textoOK && (!resultadoFiltro || resultado.toLowerCase() === resultadoFiltro);
+                });
+
+                if (!filtrados.length) {
                     alert("No hay datos para exportar.");
                     return;
                 }
@@ -250,15 +289,23 @@ include '../header.php';
                 const data = [
                     ["Código", "Curso", "Alumno", "Nota 1", "Nota 2", "Nota 3", "Promedio", "Resultado"]
                 ];
-                filas.forEach(tr => {
-                    const tds = tr.querySelectorAll('td');
-                    if (tds.length === 8) {
-                        data.push([
-                            tds[0].innerText, tds[1].innerText, tds[2].innerText,
-                            tds[3].innerText, tds[4].innerText, tds[5].innerText,
-                            tds[6].innerText, tds[7].innerText
-                        ]);
-                    }
+                filtrados.forEach(d => {
+                    const n1 = parseFloat(d.nota_01) || 0;
+                    const n2 = parseFloat(d.nota_02) || 0;
+                    const n3 = parseFloat(d.nota_03) || 0;
+                    const promedio = Math.round((n1 + n2 + n3) / 3);
+                    let resultado = promedio === 0 ? 'Pendiente' : (promedio >= 11 ? 'Aprobado' : 'Desaprobado');
+
+                    data.push([
+                        d.codigo_asignacion,
+                        d.asignatura,
+                        `${d.nombre_alumno} ${d.apellidos_alumno}`,
+                        formatearNota(d.nota_01),
+                        formatearNota(d.nota_02),
+                        formatearNota(d.nota_03),
+                        promedio,
+                        resultado
+                    ]);
                 });
 
                 const ws = XLSX.utils.aoa_to_sheet(data);

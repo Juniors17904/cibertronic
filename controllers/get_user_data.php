@@ -13,7 +13,8 @@ $user_id = intval($_GET['id']);
 $sql = "SELECT u.id, u.correo, u.rol, u.estado,
             COALESCE(a.nombre, p.nombre, ad.nombre) AS nombre,
             COALESCE(a.apellidos, p.apellidos, ad.apellidos) AS apellidos,
-            COALESCE(a.telefono, p.telefono, ad.telefono) AS telefono
+            COALESCE(a.telefono, p.telefono, ad.telefono) AS telefono,
+            COALESCE(a.dni, p.dni, ad.dni) AS dni
         FROM usuarios u
         LEFT JOIN alumnos a ON u.id = a.usuario_id
         LEFT JOIN profesores p ON u.id = p.usuario_id

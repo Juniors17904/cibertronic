@@ -5,23 +5,34 @@ class AuthController
 {
     public function login($email, $password)
     {
+        // Zona horaria correcta antes de todo
+        date_default_timezone_set('America/Lima');
+
         $user = new User();  // Instanciamos el modelo User
         $userData = $user->verificarUsuario($email); // Verificar si el correo existe
 
         if ($userData) {
             // Verificar si el rol está habilitado (solo admin y profesor)
             if (!in_array($userData['rol'], ['administrador', 'profesor'])) {
-                // Si el rol no está permitido (ej. alumno), redirige con mensaje
                 header('Location: ../views/login.php?error=sesion');
                 exit();
             }
 
             // Verificar la contraseña (hasheada)
             if (password_verify($password, $userData['password'])) {
-                // Iniciar sesión y guardar datos
                 session_start();
                 $_SESSION['user_id'] = $userData['id'];
                 $_SESSION['user_role'] = $userData['rol'];
+
+
+                $_SESSION['hora_login'] = date('d/m/Y H:i');
+
+                // Redirige a archivo PRUEBA
+                // header("Location: ../views/hora_test.php");
+                // exit();
+
+
+
 
                 // Redirigir según el rol
                 if ($userData['rol'] === 'administrador') {
@@ -31,12 +42,10 @@ class AuthController
                 }
                 exit();
             } else {
-                // Contraseña incorrecta
                 header('Location: ../views/login.php?error=contraseña_incorrecta');
                 exit();
             }
         } else {
-            // Correo no registrado
             header('Location: ../views/login.php?error=correo_no_registrado');
             exit();
         }

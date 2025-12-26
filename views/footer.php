@@ -3,8 +3,8 @@
     <div class="container">
         <p>&copy; <?php echo date("Y"); ?> Cibertronic S.R.L. Todos los derechos reservados.</p>
         <p>
-            <a href="privacy_policy.php" class="text-white">Política de Privacidad</a> |
-            <a href="terms_of_service.php" class="text-white">Términos de Servicio</a>
+            <a href="" class="text-white">Política de Privacidad</a> |
+            <a href="" class="text-white">Términos de Servicio</a>
         </p>
     </div>
 </footer>

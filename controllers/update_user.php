@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     $nombre = $_POST['nombre'];
     $apellidos = $_POST['apellidos'];
     $telefono = $_POST['telefono'];
+    $dni = $_POST['dni'] ?? ''; // Nuevo campo
     $rolNuevo = $_POST['rol'];
     $estado = $_POST['estado'];
     $contrasena = $_POST['contrasena'] ?? '';
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $stmtPwd->execute();
         }
 
-        // Si cambió el rol, eliminar de la tabla anterior y agregar a la nueva
+        // Si cambió el rol
         if ($rolAnterior !== $rolNuevo) {
             $tablas = [
                 'administrador' => 'administrador',
@@ -58,20 +59,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $stmtCheck->store_result();
 
             if ($stmtCheck->num_rows === 0) {
-                $stmtInsert = $conn->prepare("INSERT INTO $tablaNueva (usuario_id, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)");
-                $stmtInsert->bind_param("isss", $id, $nombre, $apellidos, $telefono);
+                $stmtInsert = $conn->prepare("INSERT INTO $tablaNueva (usuario_id, nombre, apellidos, telefono, dni) VALUES (?, ?, ?, ?, ?)");
+                $stmtInsert->bind_param("issss", $id, $nombre, $apellidos, $telefono, $dni);
                 $stmtInsert->execute();
             }
         } else {
-            // Si no cambió el rol, solo actualiza los datos básicos
+            // Si no cambió el rol, actualizar datos incluyendo DNI
             $tabla = match ($rolNuevo) {
                 'administrador' => 'administrador',
                 'profesor' => 'profesores',
                 'alumno' => 'alumnos',
             };
 
-            $stmtExtra = $conn->prepare("UPDATE $tabla SET nombre = ?, apellidos = ?, telefono = ? WHERE usuario_id = ?");
-            $stmtExtra->bind_param("sssi", $nombre, $apellidos, $telefono, $id);
+            $stmtExtra = $conn->prepare("UPDATE $tabla SET nombre = ?, apellidos = ?, telefono = ?, dni = ? WHERE usuario_id = ?");
+            $stmtExtra->bind_param("ssssi", $nombre, $apellidos, $telefono, $dni, $id);
             $stmtExtra->execute();
         }
 

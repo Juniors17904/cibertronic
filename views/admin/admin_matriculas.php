@@ -12,79 +12,138 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-7 col-lg-8 px-5 py-4">
+            <main class="col-md-8 col-lg-9 px-5 py-4">
+
                 <div class="card shadow mb-4">
-                    <!-- Header bien estructurado -->
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Matrículas Registradas</h4>
+                        <h4 class="mb-0">Alumnos Matriculados</h4>
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalNuevaMatricula">
                             <i class="fas fa-plus-circle me-1"></i> Nueva Matrícula
                         </button>
                     </div>
 
-                    <!-- Contenido dentro del cuerpo de la tarjeta -->
                     <div class="card-body">
+
                         <?php
-                        $sql = "SELECT m.id, CONCAT(a.nombre, ' ', a.apellidos) AS alumno,
-                        ar.nombre_area AS area, c.nombre_curso AS curso,
-                        CONCAT(h.dia, ' ', h.hora_inicio, ' - ', h.hora_fin) AS horario
-                    FROM matriculas m
-                    INNER JOIN alumnos a ON m.alumno_id = a.id
-                    INNER JOIN cursos c ON m.curso_id = c.id
-                    INNER JOIN areas ar ON c.id_area = ar.id
-                    INNER JOIN horarios h ON m.horario_id = h.id
-                    ORDER BY alumno ASC";
+                        $sql = "SELECT
+                            m.id AS matricula_id,
+                            m.codigo_matricula AS codigo_matricula,
+                            a.codigo_usuario AS alumno_id,
+                            a.nombre,
+                            a.apellidos,
+                            c.nombre_curso,
+                            m.fecha_matricula
+                        FROM matriculas m
+                        JOIN alumnos a ON m.alumno_id = a.id
+                        JOIN cursos c ON m.curso_id = c.id
+                        ORDER BY m.fecha_matricula DESC";
+
                         $matriculas = $conn->query($sql);
+
+                        $total_matriculas = ($matriculas) ? $matriculas->num_rows : 0;
                         ?>
 
+                        <!-- Tarjeta resumen -->
+                        <div class="card border-primary shadow mb-4 w-50 text-center">
+                            <div class="card-body d-flex align-items-center">
+                                <i class="fas fa-users fa-2x text-primary me-3"></i>
+                                <div>
+                                    <h5 class="mb-0">Total de Matrículas Registradas</h5>
+                                    <h3 class="mb-0"><?= $total_matriculas ?></h3>
+                                </div>
+                            </div>
+                        </div>
+
                         <?php if ($matriculas && $matriculas->num_rows > 0): ?>
-                            <table class="table table-bordered table-hover align-middle">
-                                <thead class="table-primary text-center">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Alumno</th>
-                                        <th>Área</th>
-                                        <th>Curso</th>
-                                        <th>Horario</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center">
-                                    <?php $n = 1;
-                                    while ($row = $matriculas->fetch_assoc()): ?>
+
+                            <!-- FILTROS -->
+                            <div class="row mb-3 g-2">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+                                        <input type="text" id="searchMatricula" class="form-control" placeholder="Buscar por código matrícula, código alumno, nombre o curso...">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <select id="cursoFilter" class="form-select">
+                                        <option value="">Todos los cursos</option>
+                                        <?php
+                                        $cursos = $conn->query("SELECT DISTINCT c.nombre_curso 
+                                        FROM matriculas m 
+                                        JOIN cursos c ON m.curso_id = c.id 
+                                        ORDER BY c.nombre_curso ASC");
+                                        while ($c = $cursos->fetch_assoc()):
+                                        ?>
+                                            <option value="<?= htmlspecialchars($c['nombre_curso']) ?>">
+                                                <?= htmlspecialchars($c['nombre_curso']) ?>
+                                            </option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- TABLA -->
+                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                <table class="table table-striped table-hover text-center">
+                                    <thead class="table-light">
                                         <tr>
-                                            <td><?= $n++ ?></td>
-                                            <td><?= htmlspecialchars($row['alumno']) ?></td>
-                                            <td><span class="badge bg-info text-dark"><?= htmlspecialchars($row['area']) ?></span></td>
-                                            <td><span class="badge bg-secondary"><?= htmlspecialchars($row['curso']) ?></span></td>
-                                            <td><?= htmlspecialchars($row['horario']) ?></td>
+                                            <th>#</th>
+                                            <th>Código de Matrícula</th>
+                                            <th>Código Alumno</th>
+                                            <th>Nombres y Apellidos</th>
+                                            <th>Curso</th>
+                                            <th>Fecha Matrícula</th>
+                                            <th>Detalles</th>
                                         </tr>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <?php $n = 1;
+                                        while ($row = $matriculas->fetch_assoc()): ?>
+                                            <tr>
+                                                <td><?= $n++ ?></td>
+                                                <td><?= htmlspecialchars($row['codigo_matricula']) ?></td>
+                                                <td><?= htmlspecialchars($row['alumno_id']) ?></td>
+                                                <td><?= htmlspecialchars($row['nombre'] . ' ' . $row['apellidos']) ?></td>
+                                                <td><?= htmlspecialchars($row['nombre_curso']) ?></td>
+                                                <td><?= htmlspecialchars($row['fecha_matricula']) ?></td>
+                                                <td>
+                                                    <a href="admin_matriculas_detalles.php?matricula_id=<?= $row['matricula_id'] ?>" class="btn btn-outline-success btn-sm">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         <?php else: ?>
                             <div class="alert alert-warning text-center mb-0">No hay matrículas registradas.</div>
                         <?php endif; ?>
                     </div>
                 </div>
             </main>
-
-
         </div>
     </div>
-
-
 
     <?php
     include '../modals/toast_notificacion.php';
     include '../modals/modal_nueva_matricula.php';
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
     <script>
-        // Cuando cambia el área
+        // ✅ Selector de Área en el Modal
         document.getElementById('area')?.addEventListener('change', function() {
             const areaId = this.value;
             const curso = document.getElementById('curso');
             const horario = document.getElementById('horario');
+
+            console.log('🔵 Área seleccionada:', areaId);
 
             curso.disabled = true;
             horario.disabled = true;
@@ -96,6 +155,8 @@ include '../header.php';
             fetch(`../../controllers/get_cursos_por_area.php?area_id=${areaId}`)
                 .then(res => res.json())
                 .then(data => {
+                    console.log('✅ Cursos recibidos del área:', data);
+
                     curso.innerHTML = '<option value="">-- Seleccione un curso --</option>';
                     data.forEach(c => {
                         const opt = document.createElement('option');
@@ -107,10 +168,12 @@ include '../header.php';
                 });
         });
 
-        // Cuando cambia el curso
+        // ✅ Selector de Curso en el Modal
         document.getElementById('curso')?.addEventListener('change', function() {
             const cursoId = this.value;
             const horario = document.getElementById('horario');
+
+            console.log('🔵 Curso seleccionado:', cursoId);
 
             horario.disabled = true;
             horario.innerHTML = '<option value="">Cargando horarios...</option>';
@@ -120,6 +183,8 @@ include '../header.php';
             fetch(`../../controllers/get_horarios.php?curso_id=${cursoId}`)
                 .then(res => res.json())
                 .then(data => {
+                    console.log('✅ Horarios recibidos:', data);
+
                     horario.innerHTML = '<option value="">-- Seleccione un horario --</option>';
                     data.forEach(h => {
                         const opt = document.createElement('option');
@@ -131,11 +196,13 @@ include '../header.php';
                 });
         });
 
-        // Envío del formulario
+        // ✅ Guardar Matrícula desde Modal
         document.getElementById('formMatriculaModal')?.addEventListener('submit', function(e) {
             e.preventDefault();
             const form = this;
             const data = new FormData(form);
+
+            console.log('🚀 Datos del formulario a enviar:', Object.fromEntries(data.entries()));
 
             fetch('../../controllers/insert_matricula.php', {
                     method: 'POST',
@@ -143,6 +210,8 @@ include '../header.php';
                 })
                 .then(res => res.json())
                 .then(data => {
+                    console.log('✅ Respuesta al guardar matrícula:', data);
+
                     const modalEl = document.getElementById('modalNuevaMatricula');
                     const modalInstance = bootstrap.Modal.getInstance(modalEl);
                     modalInstance.hide();
@@ -165,6 +234,7 @@ include '../header.php';
                 });
         });
 
+        // ✅ Toast Notification
         function showNotification(message, type, icon) {
             const toastEl = document.getElementById('liveToast');
             const toastHeader = toastEl.querySelector('.toast-header');
@@ -196,7 +266,74 @@ include '../header.php';
             const toast = bootstrap.Toast.getInstance(document.getElementById('liveToast'));
             toast?.hide();
         });
+
+        // ✅ Buscador Global + Filtros
+        const searchMatricula = document.getElementById('searchMatricula');
+        const areaFilter = document.getElementById('areaFilter'); // Mantenido
+        const cursoFilter = document.getElementById('cursoFilter');
+        const filas = document.querySelectorAll('tbody tr');
+
+        searchMatricula.addEventListener('input', filtrarMatriculas);
+        areaFilter?.addEventListener('change', filtrarMatriculas);
+        cursoFilter.addEventListener('change', filtrarMatriculas);
+
+        // ✅ Filtro de Área → cursos de matrículas registradas
+        areaFilter?.addEventListener('change', () => {
+            const nombreArea = areaFilter.value;
+            console.log('📌 [Área seleccionada]:', nombreArea);
+
+            if (nombreArea === '') {
+                cursoFilter.innerHTML = `<option value="">Todos los cursos</option>`;
+                <?php
+                $cursos = $conn->query("SELECT DISTINCT c.nombre_curso FROM matriculas m JOIN cursos c ON m.curso_id = c.id ORDER BY c.nombre_curso ASC");
+                while ($c = $cursos->fetch_assoc()):
+                ?>
+                    cursoFilter.innerHTML += `<option value="<?= htmlspecialchars($c['nombre_curso']) ?>"><?= htmlspecialchars($c['nombre_curso']) ?></option>`;
+                <?php endwhile; ?>
+                console.log('✅ [Cursos restaurados]: Todos los cursos con matrícula.');
+            } else {
+                fetch(`../../controllers/get_cursos_por_area_nombre.php?nombre_area=${encodeURIComponent(nombreArea)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        cursoFilter.innerHTML = `<option value="">Todos los cursos</option>`;
+                        data.forEach(curso => {
+                            cursoFilter.innerHTML += `<option value="${curso.nombre_curso}">${curso.nombre_curso}</option>`;
+                        });
+                        console.log('✅ [Cursos filtrados por área]:', data);
+                    })
+                    .catch(err => console.error('❌ Error al cargar cursos:', err));
+            }
+
+            filtrarMatriculas();
+        });
+
+        // ✅ Filtro principal de tabla
+        function filtrarMatriculas() {
+            const texto = searchMatricula.value.toLowerCase();
+            const curso = cursoFilter.value.toLowerCase();
+
+            filas.forEach(fila => {
+                const columnas = fila.querySelectorAll('td');
+                const codMatricula = columnas[1].innerText.toLowerCase();
+                const codAlumno = columnas[2].innerText.toLowerCase();
+                const nombres = columnas[3].innerText.toLowerCase();
+                const cursoCol = columnas[4].innerText.toLowerCase();
+
+                const coincideTexto =
+                    codMatricula.includes(texto) ||
+                    codAlumno.includes(texto) ||
+                    nombres.includes(texto) ||
+                    cursoCol.includes(texto);
+
+                const coincideCurso = curso === '' || cursoCol.includes(curso);
+
+                fila.style.display = coincideTexto && coincideCurso ? '' : 'none';
+            });
+        }
+
+        cursoFilter.addEventListener('change', filtrarMatriculas);
     </script>
+
 
 
 </body>

@@ -6,7 +6,7 @@ class User
     public function __construct()
     {
         // Conexión a la base de datos
-        include_once(__DIR__ . '/../config/config.php'); // Ajusta la ruta si es necesario
+        include_once(__DIR__ . '/../config/config.php');
         $this->conn = $conn;
     }
 

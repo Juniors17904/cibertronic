@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-06-2025 a las 04:41:31
+-- Tiempo de generación: 28-06-2025 a las 05:50:48
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -32,6 +32,7 @@ CREATE TABLE `administrador` (
   `usuario_id` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellidos` varchar(100) NOT NULL,
+  `dni` varchar(8) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
   `foto_perfil` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
@@ -40,9 +41,9 @@ CREATE TABLE `administrador` (
 -- Volcado de datos para la tabla `administrador`
 --
 
-INSERT INTO `administrador` (`id`, `usuario_id`, `nombre`, `apellidos`, `telefono`, `foto_perfil`) VALUES
-(1, 1, 'Juniors Santos', 'Murrugarra Vallenas ', '902396616', 'ff'),
-(69, 119, 'Damian', 'Herrrera', '987365145', NULL);
+INSERT INTO `administrador` (`id`, `usuario_id`, `nombre`, `apellidos`, `dni`, `telefono`, `foto_perfil`) VALUES
+(1, 1, 'Juniors Santos', 'Murrugarra Vallenas ', '44701633', '902396616', 'ff'),
+(69, 119, 'Damian', 'Herrrera', '45021832', '987365145', NULL);
 
 -- --------------------------------------------------------
 
@@ -55,6 +56,7 @@ CREATE TABLE `alumnos` (
   `usuario_id` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellidos` varchar(100) NOT NULL,
+  `dni` varchar(8) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
   `foto_perfil` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
@@ -63,17 +65,18 @@ CREATE TABLE `alumnos` (
 -- Volcado de datos para la tabla `alumnos`
 --
 
-INSERT INTO `alumnos` (`id`, `usuario_id`, `nombre`, `apellidos`, `telefono`, `foto_perfil`) VALUES
-(11, 112, 'Jhonny', 'Jimenez', '966587825', NULL),
-(12, 113, 'Cesar', 'Yontop', '965478357', NULL),
-(13, 114, 'Paul', 'Rios', '985412365', NULL),
-(14, 111, 'Jose', 'Vidaurre', '963257486', NULL),
-(15, 115, 'Raul', 'Francis', '987589632', NULL),
-(16, 116, 'Santos', 'Yupanqui', '987745632', NULL),
-(17, 117, 'Carlos', 'Ramirez ', '968589874', NULL),
-(18, 110, 'Jadir ', 'Guzman', '958006245', NULL),
-(19, 106, 'Cristobal', 'Ramirez ', '914782370', NULL),
-(20, 107, 'Sebastian', 'Salazar', '969584321', NULL);
+INSERT INTO `alumnos` (`id`, `usuario_id`, `nombre`, `apellidos`, `dni`, `telefono`, `foto_perfil`) VALUES
+(11, 112, 'Jhonny', 'Jimenez', '47588280', '966587825', NULL),
+(12, 113, 'Cesar', 'Yontop', '46666485', '965478357', NULL),
+(13, 114, 'Paul', 'Rios', '48251585', '985412365', NULL),
+(14, 111, 'Jose', 'Vidaurre', '48482468', '963257486', NULL),
+(15, 115, 'Raul', 'Francis', '46973585', '987589632', NULL),
+(16, 116, 'Santos', 'Yupanqui', '47104522', '987745632', NULL),
+(17, 117, 'Carlos', 'Ramirez ', '48101857', '968589874', NULL),
+(18, 110, 'Jadir ', 'Guzman', '48511716', '958006245', NULL),
+(19, 106, 'Cristobal', 'Ramirez ', '47569009', '914782370', NULL),
+(20, 107, 'Sebastian', 'Salazar', '47901896', '969584321', NULL),
+(21, 120, 'Fabiola', 'Oritz', '46598736', '902396618', NULL);
 
 -- --------------------------------------------------------
 
@@ -123,7 +126,8 @@ INSERT INTO `asignaciones` (`id`, `codigo_asignacion`, `profesor_id`, `curso_id`
 (20, 'ASG-020', 18, 9, 26),
 (21, 'ASG-021', 22, 19, 56),
 (22, 'ASG-022', 18, 5, 13),
-(23, 'ASG-023', 22, 15, 43);
+(23, 'ASG-023', 22, 15, 43),
+(24, 'ASG-024', 22, 9, 25);
 
 --
 -- Disparadores `asignaciones`
@@ -206,7 +210,37 @@ INSERT INTO `asistencia` (`id`, `alumno_id`, `curso_id`, `horario_id`, `profesor
 (120, 17, 6, 18, 18, '2025-06-24', 'Presente', 10),
 (121, 18, 6, 18, 18, '2025-06-24', 'Presente', 10),
 (122, 19, 6, 18, 18, '2025-06-24', 'Presente', 10),
-(123, 20, 6, 18, 18, '2025-06-24', 'Presente', 10);
+(123, 20, 6, 18, 18, '2025-06-24', 'Presente', 10),
+(124, 11, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(125, 12, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(126, 13, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(127, 14, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(128, 15, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(129, 16, 6, 18, 18, '2025-06-24', 'Justificado', 11),
+(130, 17, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(131, 18, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(132, 19, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(133, 20, 6, 18, 18, '2025-06-24', 'Presente', 11),
+(134, 11, 14, 41, 18, '2025-06-23', 'Presente', 12),
+(135, 12, 14, 41, 18, '2025-06-23', 'Ausente', 12),
+(136, 14, 14, 41, 18, '2025-06-23', 'Ausente', 12),
+(137, 13, 14, 41, 18, '2025-06-23', 'Presente', 12),
+(138, 11, 14, 41, 18, '2025-06-24', 'Presente', 13),
+(139, 12, 14, 41, 18, '2025-06-24', 'Ausente', 13),
+(140, 14, 14, 41, 18, '2025-06-24', 'Presente', 13),
+(141, 13, 14, 41, 18, '2025-06-24', 'Presente', 13),
+(142, 11, 14, 41, 18, '2025-06-23', 'Presente', 14),
+(143, 12, 14, 41, 18, '2025-06-23', 'Presente', 14),
+(144, 14, 14, 41, 18, '2025-06-23', 'Ausente', 14),
+(145, 13, 14, 41, 18, '2025-06-23', 'Presente', 14),
+(146, 11, 14, 41, 18, '2025-06-24', 'Presente', 15),
+(147, 12, 14, 41, 18, '2025-06-24', 'Presente', 15),
+(148, 14, 14, 41, 18, '2025-06-24', 'Presente', 15),
+(149, 13, 14, 41, 18, '2025-06-24', 'Presente', 15),
+(150, 11, 14, 41, 18, '2025-06-23', 'Presente', 16),
+(151, 12, 14, 41, 18, '2025-06-23', 'Presente', 16),
+(152, 14, 14, 41, 18, '2025-06-23', 'Presente', 16),
+(153, 13, 14, 41, 18, '2025-06-23', 'Presente', 16);
 
 -- --------------------------------------------------------
 
@@ -367,7 +401,8 @@ INSERT INTO `matriculas` (`id`, `alumno_id`, `curso_id`, `horario_id`) VALUES
 (42, 19, 6, 18),
 (43, 20, 6, 18),
 (44, 13, 9, 25),
-(45, 12, 9, 27);
+(45, 12, 9, 27),
+(46, 21, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -390,11 +425,11 @@ CREATE TABLE `notas` (
 --
 
 INSERT INTO `notas` (`id`, `alumno_id`, `asignatura`, `nota_01`, `nota_02`, `nota_03`, `ciclo`) VALUES
-(1, 11, 'Especialista en CAD', 12.00, 11.00, 14.00, NULL),
-(2, 12, 'Especialista en CAD', 20.00, 17.00, 14.00, NULL),
-(3, 14, 'Especialista en CAD', 0.00, 0.00, 0.00, NULL),
-(4, 13, 'Especialista en CAD', 0.00, 0.00, 0.00, NULL),
-(5, 11, 'Inglés', 20.00, 0.00, 0.00, NULL),
+(1, 11, 'Especialista en CAD', 12.50, 11.00, 14.00, NULL),
+(2, 12, 'Especialista en CAD', 7.80, 12.60, 15.00, NULL),
+(3, 14, 'Especialista en CAD', 10.00, 0.00, 0.00, NULL),
+(4, 13, 'Especialista en CAD', 15.00, 16.00, 11.00, NULL),
+(5, 11, 'Inglés', 19.50, 0.00, 0.00, NULL),
 (6, 12, 'Inglés', 0.00, 0.00, 0.00, NULL),
 (7, 13, 'Inglés', 0.00, 0.00, 0.00, NULL),
 (8, 14, 'Inglés', 0.00, 0.00, 0.00, NULL),
@@ -416,6 +451,7 @@ CREATE TABLE `profesores` (
   `usuario_id` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellidos` varchar(100) NOT NULL,
+  `dni` varchar(8) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
   `horario` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
@@ -424,9 +460,11 @@ CREATE TABLE `profesores` (
 -- Volcado de datos para la tabla `profesores`
 --
 
-INSERT INTO `profesores` (`id`, `usuario_id`, `nombre`, `apellidos`, `telefono`, `horario`) VALUES
-(18, 109, 'Guillermo ', 'Damariz', '985698112', NULL),
-(22, 118, 'Fabio ', 'Ortiz', '902875618', NULL);
+INSERT INTO `profesores` (`id`, `usuario_id`, `nombre`, `apellidos`, `dni`, `telefono`, `horario`) VALUES
+(18, 109, 'Guillermo ', 'Damariz', '45904717', '985698112', NULL),
+(22, 118, 'Fabio ', 'Ortiz', '44948557', '902875616', NULL),
+(23, 121, 'Dante', 'Romel', '4868957', '965324123', NULL),
+(24, 122, 'cg', 'g', '14563668', '965324123', NULL);
 
 -- --------------------------------------------------------
 
@@ -460,7 +498,10 @@ INSERT INTO `usuarios` (`id`, `correo`, `password`, `rol`, `estado`) VALUES
 (116, 'Santos.Yupanqui@cibertronic.com', '$2y$10$UhbGjyu3ZLmKQrIwa6z34OcgFrjZYF7CmnLgU3w9YTHOuJnDvP/HO', 'alumno', 'activo'),
 (117, 'Carlos.Ramirez@cibertronic.com', '$2y$10$AmamYmK3ogG3xLhpHQfYFe4T4GzmMwRXKfIr8z2FJOKXjaNGFWhnW', 'alumno', 'activo'),
 (118, 'Fabio.Ortiz@cibertronic.com', '$2y$10$KVSV4DRdBPmsbfd5CrIcoephbqWJi9oZ472iZ.n9FD/y9oSA.EAsu', 'profesor', 'activo'),
-(119, 'Damian.Herrera@gmail.com', '$2y$10$U5NDuOeZnfqteU05WVEqO.72BT7d2nrZfGvBg.zXXycRCbpj5GGe2', 'administrador', 'activo');
+(119, 'Damian.Herrera@gmail.com', '$2y$10$U5NDuOeZnfqteU05WVEqO.72BT7d2nrZfGvBg.zXXycRCbpj5GGe2', 'administrador', 'activo'),
+(120, 'Fabiola.Ortiz@cibertronic.com', '$2y$10$YxRT0uvrHW19nFzhulEHIuZBtuJ3D4BgVwHEcTgRczV1kv9/IA/bO', 'alumno', 'activo'),
+(121, 'Dante.Romel@cibertronic.com', '$2y$10$HKEKi.KpF84nnzoMMPq42.Vl3uKnrxYnEl0xXUkpVO9RItqxJ6ure', 'profesor', 'activo'),
+(122, 'c@g.com', '$2y$10$W93IsBY211YO2.9QXlWqW.sz7u/uZ1u5m81.Ky3PQE4GK0lCZdDS.', 'profesor', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -471,6 +512,7 @@ INSERT INTO `usuarios` (`id`, `correo`, `password`, `rol`, `estado`) VALUES
 --
 ALTER TABLE `administrador`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `dni` (`dni`),
   ADD KEY `fk_admin_usuario` (`usuario_id`);
 
 --
@@ -478,6 +520,7 @@ ALTER TABLE `administrador`
 --
 ALTER TABLE `alumnos`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `dni` (`dni`),
   ADD KEY `usuario_id` (`usuario_id`);
 
 --
@@ -545,6 +588,7 @@ ALTER TABLE `notas`
 --
 ALTER TABLE `profesores`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `dni` (`dni`),
   ADD KEY `usuario_id` (`usuario_id`);
 
 --
@@ -568,7 +612,7 @@ ALTER TABLE `administrador`
 -- AUTO_INCREMENT de la tabla `alumnos`
 --
 ALTER TABLE `alumnos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `areas`
@@ -580,13 +624,13 @@ ALTER TABLE `areas`
 -- AUTO_INCREMENT de la tabla `asignaciones`
 --
 ALTER TABLE `asignaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 
 --
 -- AUTO_INCREMENT de la tabla `cursos`
@@ -610,25 +654,25 @@ ALTER TABLE `imagenes`
 -- AUTO_INCREMENT de la tabla `matriculas`
 --
 ALTER TABLE `matriculas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de la tabla `notas`
 --
 ALTER TABLE `notas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT de la tabla `profesores`
 --
 ALTER TABLE `profesores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- Restricciones para tablas volcadas

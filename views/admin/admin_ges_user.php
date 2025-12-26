@@ -5,12 +5,16 @@ require_once '../../controllers/get_admin_data.php';
 $admin = getAdminData($conn, $_SESSION['user_id']);
 $notification = $_SESSION['notification'] ?? null;
 unset($_SESSION['notification']);
-unset($_SESSION['show_modal']); // Asegurarse de limpiar esto
+unset($_SESSION['show_modal']); // Limpiar modal
 
 if (!$admin) {
     die("Administrador no encontrado.");
 }
 include '../header.php';
+
+// ✅ Recibir filtro rol y estado
+$rol = $_GET['rol'] ?? '';
+$estado = $_GET['estado'] ?? '';
 ?>
 
 <body>
@@ -18,10 +22,9 @@ include '../header.php';
     <div class="container-fluid mt-0">
         <div class="row">
             <?php include 'lateral.php' ?>
-            <main class="col-md-7 col-lg-8 px-5">
+            <main class="col-md-7 col-lg-9 px-5">
                 <div class="container-fluid p-4">
                     <?php
-                    // Consultas optimizadas con manejo de errores
                     try {
                         $admins = $conn->query("SELECT COUNT(*) FROM usuarios WHERE rol='administrador'")->fetch_row()[0];
                         $profesores = $conn->query("SELECT COUNT(*) FROM usuarios WHERE rol='profesor'")->fetch_row()[0];
@@ -31,124 +34,109 @@ include '../header.php';
                     }
                     ?>
 
-                    <!-- Tarjetas Dinámicas -->
+                    <!-- Tarjetas -->
+
                     <div class="row mb-4">
-                        <!-- Tarjeta Administradores -->
+
                         <div class="col-md-4 mb-3">
                             <div class="card border-primary shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="card-subtitle text-muted">Administradores</h6>
-                                            <h3 class="card-title mb-0"><?= htmlspecialchars($admins) ?></h3>
-                                        </div>
-                                        <div class="bg-primary bg-opacity-10 p-3 rounded">
-                                            <i class="fas fa-user-shield text-primary fa-2x"></i>
-                                        </div>
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted">Administradores</h6>
+                                        <h3><?= htmlspecialchars($admins) ?></h3>
+                                    </div>
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                        <i class="fas fa-user-shield text-primary fa-2x"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Tarjeta Profesores -->
                         <div class="col-md-4 mb-3">
                             <div class="card border-success shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="card-subtitle text-muted">Profesores</h6>
-                                            <h3 class="card-title mb-0"><?= htmlspecialchars($profesores) ?></h3>
-                                        </div>
-                                        <div class="bg-success bg-opacity-10 p-3 rounded">
-                                            <i class="fas fa-chalkboard-teacher text-success fa-2x"></i>
-                                        </div>
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted">Profesores</h6>
+                                        <h3><?= htmlspecialchars($profesores) ?></h3>
+                                    </div>
+                                    <div class="bg-success bg-opacity-10 p-3 rounded">
+                                        <i class="fas fa-chalkboard-teacher text-success fa-2x"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Tarjeta Alumnos -->
                         <div class="col-md-4 mb-3">
                             <div class="card border-info shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="card-subtitle text-muted">Alumnos</h6>
-                                            <h3 class="card-title mb-0"><?= htmlspecialchars($alumnos) ?></h3>
-                                        </div>
-                                        <div class="bg-info bg-opacity-10 p-3 rounded">
-                                            <i class="fas fa-user-graduate text-info fa-2x"></i>
-                                        </div>
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted">Alumnos</h6>
+                                        <h3><?= htmlspecialchars($alumnos) ?></h3>
+                                    </div>
+                                    <div class="bg-info bg-opacity-10 p-3 rounded">
+                                        <i class="fas fa-user-graduate text-info fa-2x"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-
-
                     </div>
 
-                    <!-- Tabla de Usuarios -->
+                    <!-- Tabla -->
                     <div class="card shadow">
-                        <!-- Cabecera -->
                         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0"><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h5>
-                            <!-- BOTONES -->
+                            <h5><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h5>
                             <div>
-                                <!--NUEVO-->
                                 <button class="btn btn-light btn-sm me-2" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
                                     <i class="fas fa-plus me-1"></i> Nuevo
                                 </button>
-
                                 <div class="btn-group">
-                                    <!--BORRAR-->
                                     <button class="btn btn-danger btn-sm me-2" id="btnAbrirModalEliminarSeleccionados">
                                         <i class="fas fa-trash me-1"></i> Borrar
                                     </button>
-
-                                    <!--IMPORTAR-->
                                     <button class="btn btn-success btn-sm">
                                         <i class="fas fa-file-import me-1"></i> Importar
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- cuerpo de tabla -->
                         <div class="card-body">
-                            <!-- Barra de Búsqueda Avanzada -->
+                            <!-- Filtros -->
                             <div class="row mb-3 g-2">
+
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
                                         <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre, email...">
                                     </div>
                                 </div>
+
                                 <div class="col-md-3">
                                     <select class="form-select" id="rolFilter">
                                         <option value="">Todos los roles</option>
-                                        <option value="administrador">Administradores</option>
-                                        <option value="profesor">Profesores</option>
-                                        <option value="alumno">Alumnos</option>
+                                        <option value="administrador" <?= $rol == 'administrador' ? 'selected' : '' ?>>Administradores</option>
+                                        <option value="profesor" <?= $rol == 'profesor' ? 'selected' : '' ?>>Profesores</option>
+                                        <option value="alumno" <?= $rol == 'alumno' ? 'selected' : '' ?>>Alumnos</option>
                                     </select>
                                 </div>
+
                                 <div class="col-md-3">
                                     <select class="form-select" id="statusFilter">
                                         <option value="">Todos los estados</option>
-                                        <option value="activo">Activos</option>
-                                        <option value="inactivo">Inactivos</option>
+                                        <option value="activo" <?= $estado == 'activo' ? 'selected' : '' ?>>Activos</option>
+                                        <option value="inactivo" <?= $estado == 'inactivo' ? 'selected' : '' ?>>Inactivos</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <!-- Tabla Responsive -->
-                            <div class="table-responsive">
+                            <!-- Tabla -->
+                            <div class="table-responsive" style=" max-height: 500px; overflow-y: auto;">
                                 <table class="table table-striped table-hover align-middle">
                                     <thead class="table-light">
                                         <tr>
-                                            <th width="50px"><input type="checkbox" id="selectAll" class="form-check-input"></th>
+                                            <th></th>
+                                            <th>Código Usuario</th>
                                             <th>Email</th>
                                             <th>Nombre</th>
+                                            <th>DNI</th>
                                             <th>Rol</th>
                                             <th>Teléfono</th>
                                             <th>Estado</th>
@@ -156,25 +144,35 @@ include '../header.php';
                                         </tr>
                                     </thead>
                                     <tbody>
+
+
                                         <?php
-                                        // Consulta optimizada para obtener datos de usuarios
-                                        $query = "SELECT u.*, 
-                                                    COALESCE(a.nombre, p.nombre, ad.nombre) AS nombre_completo,
-                                                    COALESCE(a.apellidos, p.apellidos, ad.apellidos) AS apellidos_completos,
-                                                    COALESCE(a.telefono, p.telefono, ad.telefono) AS telefono_completo
-                                                    FROM usuarios u
-                                                    LEFT JOIN alumnos a ON u.id = a.usuario_id
-                                                    LEFT JOIN profesores p ON u.id = p.usuario_id
-                                                    LEFT JOIN administrador ad ON u.id = ad.usuario_id
-                                                    ORDER BY u.id";
+                                        $query = "SELECT 
+                                                u.*, 
+                                                COALESCE(a.nombre, p.nombre, ad.nombre) AS nombre_completo,
+                                                COALESCE(a.apellidos, p.apellidos, ad.apellidos) AS apellidos_completos,
+                                                COALESCE(a.telefono, p.telefono, ad.telefono) AS telefono_completo,
+                                                COALESCE(a.dni, p.dni, ad.dni) AS dni_completo,
+                                                COALESCE(a.codigo_usuario, p.codigo_usuario, ad.codigo_usuario) AS codigo_usuario
+                                            FROM usuarios u
+                                            LEFT JOIN alumnos a ON u.id = a.usuario_id
+                                            LEFT JOIN profesores p ON u.id = p.usuario_id
+                                            LEFT JOIN administrador ad ON u.id = ad.usuario_id
+                                            WHERE 1";
+
+                                        if ($rol !== '') {
+                                            $query .= " AND u.rol = '$rol'";
+                                        }
+                                        if ($estado !== '') {
+                                            $query .= " AND u.estado = '$estado'";
+                                        }
+
+                                        $query .= " ORDER BY u.id";
+
 
                                         try {
                                             $result = $conn->query($query);
-
-                                            if ($result === false) {
-                                                throw new Exception("Error en la consulta: " . $conn->error);
-                                            }
-
+                                            if ($result === false) throw new Exception("Error: " . $conn->error);
                                             while ($user = $result->fetch_assoc()):
                                                 $badgeColor = match ($user['rol']) {
                                                     'administrador' => 'bg-danger',
@@ -184,54 +182,32 @@ include '../header.php';
                                         ?>
                                                 <tr>
                                                     <td><input type="checkbox" class="form-check-input user-checkbox" value="<?= $user['id'] ?>"></td>
+                                                    <td><?= htmlspecialchars($user['codigo_usuario'] ?? 'N/A') ?></td>
                                                     <td><?= htmlspecialchars($user['correo']) ?></td>
                                                     <td><?= htmlspecialchars($user['nombre_completo'] . ' ' . $user['apellidos_completos']) ?></td>
+                                                    <td><?= htmlspecialchars($user['dni_completo'] ?? 'N/A') ?></td>
                                                     <td><span class="badge <?= $badgeColor ?>"><?= ucfirst($user['rol']) ?></span></td>
                                                     <td><?= htmlspecialchars($user['telefono_completo'] ?? 'N/A') ?></td>
-                                                    <td><span class="badge <?= $user['estado'] == 'activo' ? 'bg-success' : 'bg-secondary' ?>">
-                                                            <?= ucfirst($user['estado']) ?>
-                                                        </span></td>
+                                                    <td><span class="badge <?= $user['estado'] == 'activo' ? 'bg-success' : 'bg-secondary' ?>"><?= ucfirst($user['estado']) ?></span></td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <!-- Boton de editar -->
-                                                            <button class="btn btn-outline-primary"
-                                                                data-bs-toggle="tooltip"
-                                                                title="Editar"
-                                                                onclick="editUser(<?= $user['id'] ?>)">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                            <!-- boton de eliminar -->
-                                                            <button class="btn btn-outline-danger"
-                                                                data-bs-toggle="tooltip"
-                                                                title="Eliminar"
-                                                                onclick="confirmDelete(<?= $user['id'] ?>)">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button>
+                                                            <button class="btn btn-outline-primary" onclick="editUser(<?= $user['id'] ?>)"><i class="fas fa-edit"></i></button>
+                                                            <button class="btn btn-outline-danger" onclick="confirmDelete(<?= $user['id'] ?>)"><i class="fas fa-trash-alt"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                        <?php
-                                            endwhile;
+                                        <?php endwhile;
                                         } catch (Exception $e) {
-                                            echo "<tr><td colspan='7' class='text-center text-danger'>" . $e->getMessage() . "</td></tr>";
-                                        }
-                                        ?>
+                                            echo "<tr><td colspan='8'>" . $e->getMessage() . "</td></tr>";
+                                        } ?>
                                     </tbody>
                                 </table>
                             </div>
 
-                            <!-- Pie de tabla con paginación -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="mt-3 d-flex justify-content-between">
                                 <div class="text-muted">
-                                    Mostrando <span id="showingCount"><?= $result->num_rows ?? 0 ?></span> de <?= $result->num_rows ?? 0 ?> registros
+                                    Mostrando <?= $result->num_rows ?? 0 ?> registros
                                 </div>
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination pagination-sm mb-0">
-                                        <li class="page-item disabled"><a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a></li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a></li>
-                                    </ul>
-                                </nav>
                             </div>
                         </div>
                     </div>
@@ -240,18 +216,18 @@ include '../header.php';
         </div>
     </div>
 
-    <?php
-    include '../modals/modal_eliminar_usuario.php';
-    include '../modals/modal_eliminar_multiple.php';
-    include '../modals/modal_agregar_nuevo_usuario.php';
-    include '../modals/toast_notificacion.php';
-    include '../modals/modal_editar_usuario.php';
-    ?>
+    <?php include '../modals/modal_eliminar_usuario.php'; ?>
+    <?php include '../modals/modal_eliminar_multiple.php'; ?>
+    <?php include '../modals/modal_agregar_nuevo_usuario.php'; ?>
+    <?php include '../modals/toast_notificacion.php'; ?>
+    <?php include '../modals/modal_editar_usuario.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/js/admin-users.js"></script>
     <script>
         ///////////////////////////////
+
+
         // editar usuario
         function editUser(id) {
             console.log('🛠️ Iniciando edición de usuario. ID recibido:', id);
@@ -274,6 +250,7 @@ include '../header.php';
                         document.getElementById('editarTelefono').value = user.telefono;
                         document.getElementById('editarRol').value = user.rol;
                         document.getElementById('editarEstado').value = user.estado;
+                        document.getElementById('editarDNI').value = user.dni || '';
 
                         // La contraseña NO se llena por seguridad
 
@@ -288,8 +265,6 @@ include '../header.php';
                     showNotification('Error de red al cargar usuario.', 'danger', 'times-circle');
                 });
         }
-
-
 
         document.getElementById('formEditarUsuario')?.addEventListener('submit', function(e) {
             e.preventDefault(); // ⛔ evita recargar la página
@@ -318,12 +293,6 @@ include '../header.php';
                     showNotification('Error de red al actualizar usuario.', 'danger', 'times-circle');
                 });
         });
-
-
-
-
-
-
 
         ///////////////////////////////////
 
@@ -472,7 +441,27 @@ include '../header.php';
             if (modal) modal.hide();
             setTimeout(() => location.reload(), 500);
         }
+
+        //////////////////////////////////////////////
+
+        document.getElementById('rolFilter').addEventListener('change', updateFilters);
+        document.getElementById('statusFilter').addEventListener('change', updateFilters);
+
+        function updateFilters() {
+            const rol = document.getElementById('rolFilter').value;
+            const estado = document.getElementById('statusFilter').value;
+            let url = '?';
+            if (rol) url += 'rol=' + rol + '&';
+            if (estado) url += 'estado=' + estado;
+            location.href = url;
+        }
+
+
+        //////////////////////////////////////////////////
     </script>
+
+
+
 
 </body>
 

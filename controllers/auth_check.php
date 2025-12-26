@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+date_default_timezone_set('America/Lima'); //zona horaria real
 $tiempo_maximo_inactividad = 3600; // 1 hora = 3600 segundos
 
 if (isset($_SESSION['ultimo_acceso'])) {

@@ -1,11 +1,11 @@
 <!-- Cabecera Profesor -->
 <header class="navbar navbar-expand-md navbar-dark bg-dark shadow-lg">
     <div class="container-fluid">
-        <!-- Logo/Brand - Versión Mejorada -->
+        <!-- Logo/Brand - Con Imagen Redonda -->
         <a class="navbar-brand d-flex align-items-center" href="#" style="font-family: 'Orbitron', sans-serif;">
-            <div class="logo-container bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+            <div class="logo-container rounded-circle overflow-hidden me-2"
                 style="width: 44px; height: 44px;">
-                <i class="fas fa-shield-alt fa-lg text-white"></i>
+                <img src="../../assets/images/logo.jpg" alt="Logo" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <span class="brand-text">
                 <span class="d-none d-md-inline-block">CIBERTRONIC</span>
@@ -49,13 +49,14 @@
                 <!-- Foto y nombre -->
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                     <div class="position-relative me-2">
-                        <img src="../../assets/images/perfil.jpg" alt="Perfil" width="36" height="36" class="rounded-circle border border-2 border-primary">
+                        <img src="../../assets/images//<?= htmlspecialchars(!empty(trim($prof['foto'])) ? $prof['foto'] : 'perfil.jpg') ?>" alt="Perfil" width="36" height="36" class="rounded-circle border border-2 border-primary">
                         <span class="position-absolute bottom-0 end-0 bg-success rounded-circle" style="width: 10px; height: 10px;"></span>
                     </div>
                     <span class="d-none d-md-inline">
                         <?= htmlspecialchars($prof['nombre'] . ' ' . $prof['apellidos']) ?>
                     </span>
                 </a>
+
 
                 <!-- Dropdown -->
                 <ul class="dropdown-menu dropdown-menu-end shadow-lg">

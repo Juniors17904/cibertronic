@@ -18,7 +18,8 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-7 col-lg-8 px-5 py-4">
+            <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
+            <main class="col-md-8 col-lg-9 px-md-5 py-4">
                 <h4 class="text-primary mb-4"><i class="fas fa-calendar-check me-2"></i> Seleccionar Curso para Asistencia</h4>
 
                 <?php if ($cursos && $cursos->num_rows > 0): ?>
@@ -54,6 +55,7 @@ include '../header.php';
                                                         <input type="hidden" name="curso_id" value="<?= $row['curso_id'] ?>">
                                                         <input type="hidden" name="horario_id" value="<?= $row['horario_id'] ?>">
                                                         <input type="hidden" name="codigo_asignacion" value="<?= $row['codigo_asignacion'] ?>">
+
                                                         <button type="submit" class="btn btn-outline-primary btn-sm">
                                                             <i class="fas fa-check-circle me-1"></i> Registrar Asistencia
                                                         </button>

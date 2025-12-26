@@ -1,4 +1,4 @@
-<!-- Panel lateral -->
+<!-- Panel lateral Admin -->
 <nav class="col-md-4 col-lg-3 d-md-block sidebar collapse bg-dark text-white">
     <div class="position-sticky pt-3 vh-100">
         <!-- Encabezado del menú -->
@@ -10,20 +10,37 @@
         <ul class="nav flex-column">
             <?php
             $current_page = basename($_SERVER['PHP_SELF']);
+
+            // Agrupa páginas relacionadas
+            $matriculas_pages = ['admin_matriculas.php', 'admin_matriculas_detalles.php'];
+            $asignaciones_pages = [
+                'admin_courses.php',
+                'admin_detalle_asignaciones.php',
+                'admin_detalles_asistencias.php',
+                'admin_detalles_notas.php'
+            ];
+
             $menu_items = [
-                'admin_dashboard.php'   => '<i class="fas fa-home me-2"></i> Página de la Institución',
-                'admin_profile.php'     => '<i class="fas fa-user me-2"></i> Mi Perfil',
-                'admin_ges_user.php'    => '<i class="fas fa-users me-2"></i> Gestión de Usuarios',
-                'admin_courses.php'     => '<i class="fas fa-book me-2"></i> Gestión de Asignaciones',
-                'admin_matriculas.php'  => '<i class="fas fa-user-check me-2"></i> Gestión de Matrículas', // NUEVO ENLACE
-                'admin_reports.php'     => '<i class="fas fa-chart-bar me-2"></i> Ver Reportes'
+                'admin_dashboard.php'           => '<i class="fas fa-home me-2"></i> Página de la Institución',
+                'admin_profile.php'             => '<i class="fas fa-user me-2"></i> Mi Perfil',
+                'admin_ges_user.php'            => '<i class="fas fa-users me-2"></i> Gestión de Usuarios',
+                'admin_matriculas.php'          => '<i class="fas fa-user-check me-2"></i> Gestión de Matrículas',
+                'admin_courses.php'             => '<i class="fas fa-book me-2"></i> Gestión de Asignaciones',
+                'admin_reports.php'             => '<i class="fas fa-chart-bar me-2"></i> Ver Reportes'
             ];
 
             foreach ($menu_items as $page => $title) {
-                $active_class = ($current_page == $page) ? 'active bg-primary' : '';
+                if ($page === 'admin_matriculas.php') {
+                    $active_class = in_array($current_page, $matriculas_pages) ? 'active bg-primary' : '';
+                } elseif ($page === 'admin_courses.php') {
+                    $active_class = in_array($current_page, $asignaciones_pages) ? 'active bg-primary' : '';
+                } else {
+                    $active_class = ($current_page == $page) ? 'active bg-primary' : '';
+                }
+
                 echo '<li class="nav-item my-1">
-                        <a class="nav-link text-white ' . $active_class . ' rounded-3 px-3 py-2" 
-                            href="' . $page . '">
+                        <a class="nav-link text-white ' . $active_class . ' rounded-3 px-3 py-2"
+                        href="' . $page . '">
                             ' . $title . '
                         </a>
                     </li>';

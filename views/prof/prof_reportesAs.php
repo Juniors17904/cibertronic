@@ -15,7 +15,9 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php' ?>
 
-            <main class="col-md-7 col-lg-8 px-5 py-4">
+            <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
+            <main class="col-md-8 col-lg-9 px-5 py-4">
+
                 <div class="card shadow-lg rounded mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">Reporte de Asistencias</h5>

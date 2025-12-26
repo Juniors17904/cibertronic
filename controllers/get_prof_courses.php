@@ -13,7 +13,7 @@ function getCursosAsignados($conn, $usuario_id)
             a.curso_id,                            -- ID del curso
             a.horario_id,                          -- ID del horario
 
-            -- Total de alumnos matriculados en ese curso y horario
+                                                        -- Total de alumnos matriculados en ese curso y horario
             (SELECT COUNT(*) 
                 FROM matriculas m 
                 WHERE m.curso_id = a.curso_id 

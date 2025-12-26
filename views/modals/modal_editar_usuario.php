@@ -31,6 +31,11 @@
                         <input type="text" class="form-control" id="editarTelefono" name="telefono">
                     </div>
 
+                    <div class="mb-3">
+                        <label for="editarDNI" class="form-label">DNI</label>
+                        <input type="text" class="form-control" id="editarDNI" name="dni" maxlength="15">
+                    </div>
+
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="editarRol" class="form-label">Rol</label>
@@ -49,12 +54,11 @@
                                 <option value="inactivo">Inactivo</option>
                             </select>
                         </div>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="editarContrasena" class="form-label">Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="editarContrasena" name="contrasena" placeholder="Dejar vacío para mantener la actual">
-                        </div>
-
+                    <div class="mb-3 mt-3">
+                        <label for="editarContrasena" class="form-label">Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="editarContrasena" name="contrasena" placeholder="Dejar vacío para mantener la actual">
                     </div>
                 </div>
 

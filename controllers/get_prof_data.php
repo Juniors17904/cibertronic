@@ -5,10 +5,11 @@ require_once __DIR__ . '/../config/config.php';
 function getProfData($conn, $user_id)
 {
     // Consulta SQL para obtener datos del profesor y del usuario asociado
-    $sql = "SELECT p.*, u.correo, u.rol, u.estado 
-            FROM profesores p
-            INNER JOIN usuarios u ON p.usuario_id = u.id
-            WHERE p.usuario_id = ?";
+    $sql = "SELECT p.*, u.correo AS correo_institucional, u.rol, u.estado 
+        FROM profesores p
+        INNER JOIN usuarios u ON p.usuario_id = u.id
+        WHERE p.usuario_id = ?";
+
 
     // Preparar y ejecutar la consulta de forma segura
     if ($stmt = $conn->prepare($sql)) {

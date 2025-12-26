@@ -18,7 +18,8 @@ $result = getCursosAsignados($conn, $_SESSION['user_id']);
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-7 col-lg-8 px-5 py-4">
+            <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
+            <main class="col-md-8 col-lg-9 px-5 py-4">
 
                 <h4 class="mb-4 text-success"><i class="fas fa-graduation-cap me-2"></i>Seleccionar Curso para Registrar Notas</h4>
 

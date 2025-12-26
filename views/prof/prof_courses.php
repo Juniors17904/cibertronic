@@ -16,7 +16,8 @@ include '../header.php';
             <?php include 'lateral.php' ?>
 
             <!-- Contenido principal -->
-            <main class="col-md-7 col-lg-8 px-5 py-4">
+            <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
+            <main class="col-md-8 col-lg-9 px-md-5 py-4">
                 <h3 class="mb-4 text-primary">Mis Cursos Asignados</h3>
                 <div class="row">
                     <?php
@@ -62,6 +63,7 @@ include '../header.php';
                                                 <input type="hidden" name="horario_texto" value="<?= htmlspecialchars($row['dia'] . ' ' . $row['hora_inicio'] . ' - ' . $row['hora_fin']) ?>">
                                                 <input type="hidden" name="curso_id" value="<?= $row['curso_id'] ?>">
                                                 <input type="hidden" name="horario_id" value="<?= $row['horario_id'] ?>">
+                                                <input type="hidden" name="codigo_asignacion" value="<?= $row['codigo_asignacion'] ?>">
                                                 <button type="submit" class="btn btn-success">
                                                     <i class="fas fa-edit me-1"></i> Calificaciones
                                                 </button>

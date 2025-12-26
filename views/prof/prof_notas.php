@@ -27,18 +27,26 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-7 col-lg-8 px-5 py-4">
+
+            <!-- <main class="col-md-7 col-lg-8 px-5 py-4"> -->
+            <main class="col-md-8 col-lg-9 px-5 py-4">
+
                 <h3 class="text-primary mb-4"><i class="fas fa-clipboard me-2"></i>Registro de Notas</h3>
 
                 <div class="card shadow border-0 mb-4">
                     <div class="card-body">
+                        <!-- Información del curso -->
                         <p><strong>Curso:</strong> <?= htmlspecialchars($nombre_curso) ?></p>
                         <p><strong>Horario:</strong> <?= htmlspecialchars($horario_texto) ?></p>
-                        <p><strong>Código de Asignación:</strong> <?= htmlspecialchars($codigo_asignacion) ?></p>
+                        <p><strong>Código de Asignación:</strong>
+                            <?= !empty($codigo_asignacion) ? htmlspecialchars($codigo_asignacion) : '<span class="text-danger">No disponible</span>' ?>
+                        </p>
 
+                        <!-- Formulario -->
                         <form id="formNotas" method="POST">
                             <input type="hidden" name="curso_id" id="curso_id" value="<?= $curso_id ?>">
                             <input type="hidden" name="horario_id" id="horario_id" value="<?= $horario_id ?>">
+                            <input type="hidden" name="codigo_asignacion" value="<?= htmlspecialchars($codigo_asignacion) ?>">
 
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered align-middle">
@@ -65,17 +73,21 @@ include '../header.php';
                                     <i class="fas fa-save me-1"></i> Guardar Notas
                                 </button>
                                 <button type="button" id="btnCancelar" class="btn btn-secondary">Cancelar</button>
-
                             </div>
                         </form>
                     </div>
                 </div>
             </main>
+
+
+
+
         </div>
     </div>
 
     <?php include '../modals/toast_notificacion.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cursoId = document.getElementById('curso_id').value;
@@ -97,9 +109,9 @@ include '../header.php';
                             const row = `
                         <tr>
                             <td>${alumno.nombre}</td>
-                            <td><input type="number" class="form-control nota" name="notas[${alumno.id}][n1]" value="${n1}" placeholder="--" min="0" max="20"></td>
-                            <td><input type="number" class="form-control nota" name="notas[${alumno.id}][n2]" value="${n2}" placeholder="--" min="0" max="20"></td>
-                            <td><input type="number" class="form-control nota" name="notas[${alumno.id}][n3]" value="${n3}" placeholder="--" min="0" max="20"></td>
+                            <td><input type="number" class="form-control nota text-center" name="notas[${alumno.id}][n1]" value="${n1}" placeholder="--" min="0" max="20" step="0.01"></td>
+                            <td><input type="number" class="form-control nota text-center" name="notas[${alumno.id}][n2]" value="${n2}" placeholder="--" min="0" max="20" step="0.01"></td>
+                            <td><input type="number" class="form-control nota text-center" name="notas[${alumno.id}][n3]" value="${n3}" placeholder="--" min="0" max="20" step="0.01"></td>
                             <td class="text-center promedio">-</td>
                             <td class="text-center estado">-</td>
                         </tr>`;
@@ -107,8 +119,28 @@ include '../header.php';
                         });
 
                         calcularPromedios();
+
                         tbody.querySelectorAll('.nota').forEach(input => {
-                            input.addEventListener('input', calcularPromedios);
+                            input.addEventListener('input', () => {
+                                // Eliminar ceros iniciales
+                                if (/^0[0-9]+/.test(input.value)) {
+                                    input.value = input.value.replace(/^0+/, '');
+                                }
+
+                                // No permitir letras u otros caracteres
+                                if (!/^\d*\.?\d*$/.test(input.value)) {
+                                    input.value = '';
+                                }
+
+                                // Validar que no exceda 20
+                                const val = parseFloat(input.value);
+                                if (val > 20) {
+                                    showNotification('Nota no válida', 'warning', 'exclamation-triangle');
+                                    input.value = '';
+                                }
+
+                                calcularPromedios();
+                            });
                         });
                     }
                 });
@@ -135,9 +167,10 @@ include '../header.php';
                         estadoEl.textContent = '--';
                         estadoEl.className = 'text-center estado text-secondary';
                     } else {
-                        const promedio = (suma / 3).toFixed(2);
-                        promedioEl.textContent = promedio;
-                        if (promedio == 0.00) {
+                        const promedio = Math.round(suma / 3); // redondeado sin decimales
+                        promedioEl.textContent = promedio < 10 ? '0' + promedio : promedio;
+
+                        if (promedio === 0) {
                             estadoEl.textContent = 'Pendiente';
                             estadoEl.className = 'text-center estado text-warning';
                         } else if (promedio >= 11) {
@@ -199,19 +232,14 @@ include '../header.php';
                 new bootstrap.Toast(toastEl).show();
             }
 
-            // Cancelar
+            // Botón Cancelar
             document.getElementById('btnCancelar').addEventListener('click', () => {
                 sessionStorage.setItem('flash_warning', 'Acción cancelada por el usuario');
                 window.location.href = 'prof_courses.php';
             });
-
-
-
-
-
-
         });
     </script>
+
 
 </body>
 

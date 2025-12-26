@@ -31,11 +31,12 @@ $stmtAsign->close();
 
 // Obtener alumnos matriculados
 $sql = "
-    SELECT a.id, CONCAT(a.nombre, ' ', a.apellidos) AS nombre
+    SELECT a.id, a.nombre, a.apellidos, a.codigo_usuario
     FROM matriculas m
     INNER JOIN alumnos a ON a.id = m.alumno_id
     WHERE m.curso_id = ? AND m.horario_id = ?
 ";
+
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $curso_id, $horario_id);
@@ -46,7 +47,9 @@ $alumnos = [];
 while ($row = $result->fetch_assoc()) {
     $alumnos[$row['id']] = [
         'id' => $row['id'],
+        'codigo_usuario' => $row['codigo_usuario'],
         'nombre' => $row['nombre'],
+        'apellidos' => $row['apellidos'],
         'estado' => null,
         'codigo_asignacion' => $codigo_asignacion
     ];
