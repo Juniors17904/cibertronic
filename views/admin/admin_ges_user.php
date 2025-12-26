@@ -84,18 +84,16 @@ $estado = $_GET['estado'] ?? '';
                     <div class="card shadow">
                         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                             <h5><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h5>
-                            <div>
-                                <button class="btn btn-light btn-sm me-2" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
                                     <i class="fas fa-plus me-1"></i> Nuevo
                                 </button>
-                                <div class="btn-group">
-                                    <button class="btn btn-danger btn-sm me-2" id="btnAbrirModalEliminarSeleccionados">
-                                        <i class="fas fa-trash me-1"></i> Borrar
-                                    </button>
-                                    <button class="btn btn-success btn-sm">
-                                        <i class="fas fa-file-import me-1"></i> Importar
-                                    </button>
-                                </div>
+                                <button class="btn btn-danger btn-sm" id="btnAbrirModalEliminarSeleccionados">
+                                    <i class="fas fa-trash me-1"></i> Borrar
+                                </button>
+                                <button class="btn btn-success btn-sm">
+                                    <i class="fas fa-file-import me-1"></i> Importar
+                                </button>
                             </div>
                         </div>
                         <div class="card-body">
