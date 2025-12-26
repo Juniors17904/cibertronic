@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once '../config/config.php';
 
 $is_logged_in = isset($_SESSION['user_id']);
 
@@ -19,14 +20,14 @@ include 'header.php';
 
             <!-- Columna de la imagen (oculta en móvil) -->
             <div class="col-md-6 d-none d-md-flex justify-content-center">
-                <img src="../assets/images/login.jpg" alt="Equipo de Cibertronic" class="img-fluid rounded shadow" />
+                <img src="<?= BASE_URL ?>/assets/images/login.jpg" alt="Equipo de Cibertronic" class="img-fluid rounded shadow" />
             </div>
 
             <!-- Columna del formulario -->
             <div class="col-12 col-md-6 d-flex flex-column justify-content-center px-2 px-md-4">
                 <!-- Logo oficial de Cibertronic -->
                 <div class="text-center mb-4">
-                    <img src="../assets/images/Cibertro.png" alt="Logo Instituto Cibertronic"
+                    <img src="<?= BASE_URL ?>/assets/images/Cibertro.png" alt="Logo Instituto Cibertronic"
                         class="img-fluid rounded-4" style="max-width: 500px; width: 100%;" />
                 </div>
 

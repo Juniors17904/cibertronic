@@ -10,7 +10,7 @@
         <a class="navbar-brand d-flex align-items-center" href="#" style="font-family: 'Orbitron', sans-serif;">
             <div class="logo-container rounded-circle overflow-hidden me-2"
                 style="width: 44px; height: 44px;">
-                <img src="../../assets/images/logo.jpg" alt="Logo" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="<?= BASE_URL ?>/assets/images/logo.jpg" alt="Logo" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <span class="brand-text">
                 <span class="d-none d-md-inline-block">CIBERTRONIC</span>
@@ -49,7 +49,7 @@
                 <!-- Foto y nombre -->
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                     <div class="position-relative me-2">
-                        <img src="../../assets/images//<?= htmlspecialchars(!empty(trim($prof['foto'])) ? $prof['foto'] : 'perfil.jpg') ?>" alt="Perfil" width="36" height="36" class="rounded-circle border border-2 border-primary">
+                        <img src="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars(!empty(trim($prof['foto'])) ? $prof['foto'] : 'perfil.jpg') ?>" alt="Perfil" width="36" height="36" class="rounded-circle border border-2 border-primary">
                         <span class="position-absolute bottom-0 end-0 bg-success rounded-circle" style="width: 10px; height: 10px;"></span>
                     </div>
                     <span class="d-none d-md-inline">

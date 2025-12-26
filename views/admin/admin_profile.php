@@ -33,7 +33,7 @@ include '../header.php';
                                 <div class="d-flex justify-content-center mb-4">
                                     <div class="position-relative d-inline-block">
                                         <img id="fotoPerfil"
-                                            src="../../assets/images/<?= htmlspecialchars(!empty(trim($admin['foto'])) ? $admin['foto'] : 'perfil.jpg') ?>"
+                                            src="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars(!empty(trim($admin['foto'])) ? $admin['foto'] : 'perfil.jpg') ?>"
                                             alt="Foto de perfil"
                                             class="img-thumbnail rounded-circle"
                                             style="width: 150px; height: 150px; object-fit: cover;">
