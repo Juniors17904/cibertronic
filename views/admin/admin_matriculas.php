@@ -12,7 +12,7 @@ include '../header.php';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-8 col-lg-9 px-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
 
                 <div class="card shadow mb-4">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -44,7 +44,7 @@ include '../header.php';
                         ?>
 
                         <!-- Tarjeta resumen -->
-                        <div class="card border-primary shadow mb-4 w-50 text-center">
+                        <div class="card border-primary shadow mb-4 w-100 w-md-50 text-center">
                             <div class="card-body d-flex align-items-center">
                                 <i class="fas fa-users fa-2x text-primary me-3"></i>
                                 <div>
