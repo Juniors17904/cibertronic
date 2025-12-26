@@ -84,8 +84,9 @@ include '../header.php';
                             </div>
 
                             <!-- TABLA -->
-                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
-                                <table class="table table-striped table-hover text-center table-sm">
+                            <div class="mx-n3 mx-md-0">
+                                <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
+                                    <table class="table table-striped table-hover text-center table-sm mb-0">
                                     <thead class="table-light sticky-top">
                                         <tr>
                                             <th style="min-width: 40px; white-space: nowrap;">#</th>
@@ -116,6 +117,7 @@ include '../header.php';
                                         <?php endwhile; ?>
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
 
                         <?php else: ?>
