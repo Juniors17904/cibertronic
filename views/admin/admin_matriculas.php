@@ -84,29 +84,29 @@ include '../header.php';
                             </div>
 
                             <!-- TABLA -->
-                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                                <table class="table table-striped table-hover text-center">
-                                    <thead class="table-light">
+                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
+                                <table class="table table-striped table-hover text-center table-sm">
+                                    <thead class="table-light sticky-top">
                                         <tr>
-                                            <th class="d-none d-md-table-cell">#</th>
-                                            <th class="d-none d-lg-table-cell">Código de Matrícula</th>
-                                            <th>Código Alumno</th>
-                                            <th>Nombres y Apellidos</th>
-                                            <th>Curso</th>
-                                            <th class="d-none d-md-table-cell">Fecha Matrícula</th>
-                                            <th>Detalles</th>
+                                            <th style="min-width: 40px; white-space: nowrap;">#</th>
+                                            <th style="min-width: 100px; white-space: nowrap;">Cód. Matrícula</th>
+                                            <th style="min-width: 90px; white-space: nowrap;">Cód. Alumno</th>
+                                            <th style="min-width: 130px; white-space: nowrap;">Nombres y Apellidos</th>
+                                            <th style="min-width: 100px; white-space: nowrap;">Curso</th>
+                                            <th style="min-width: 85px; white-space: nowrap;">Fecha</th>
+                                            <th style="min-width: 70px; white-space: nowrap;">Detalles</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $n = 1;
                                         while ($row = $matriculas->fetch_assoc()): ?>
                                             <tr>
-                                                <td class="d-none d-md-table-cell"><?= $n++ ?></td>
-                                                <td class="d-none d-lg-table-cell"><?= htmlspecialchars($row['codigo_matricula']) ?></td>
-                                                <td><?= htmlspecialchars($row['alumno_id']) ?></td>
-                                                <td><?= htmlspecialchars($row['nombre'] . ' ' . $row['apellidos']) ?></td>
+                                                <td><?= $n++ ?></td>
+                                                <td style="white-space: nowrap;"><?= htmlspecialchars($row['codigo_matricula']) ?></td>
+                                                <td style="white-space: nowrap;"><?= htmlspecialchars($row['alumno_id']) ?></td>
+                                                <td style="white-space: nowrap;"><?= htmlspecialchars($row['nombre'] . ' ' . $row['apellidos']) ?></td>
                                                 <td><?= htmlspecialchars($row['nombre_curso']) ?></td>
-                                                <td class="d-none d-md-table-cell"><?= htmlspecialchars($row['fecha_matricula']) ?></td>
+                                                <td style="white-space: nowrap;"><?= htmlspecialchars($row['fecha_matricula']) ?></td>
                                                 <td>
                                                     <a href="admin_matriculas_detalles.php?matricula_id=<?= $row['matricula_id'] ?>" class="btn btn-outline-success btn-sm">
                                                         <i class="fas fa-eye"></i>
