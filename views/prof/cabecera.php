@@ -1,6 +1,11 @@
 <!-- Cabecera Profesor -->
 <header class="navbar navbar-expand-md navbar-dark bg-dark shadow-lg">
     <div class="container-fluid">
+        <!-- Botón para móviles (PRIMERO - a la izquierda) -->
+        <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
         <!-- Logo/Brand - Con Imagen Redonda -->
         <a class="navbar-brand d-flex align-items-center" href="#" style="font-family: 'Orbitron', sans-serif;">
             <div class="logo-container rounded-circle overflow-hidden me-2"
@@ -12,11 +17,6 @@
                 <small class="d-block d-md-none">CT</small>
             </span>
         </a>
-
-        <!-- Botón para móviles -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
         <!-- Menú superior derecho -->
         <div class="d-flex align-items-center ms-auto">
