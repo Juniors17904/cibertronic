@@ -187,9 +187,9 @@ $estado = $_GET['estado'] ?? '';
                                                     <td><?= htmlspecialchars($user['telefono_completo'] ?? 'N/A') ?></td>
                                                     <td><span class="badge <?= $user['estado'] == 'activo' ? 'bg-success' : 'bg-secondary' ?>"><?= ucfirst($user['estado']) ?></span></td>
                                                     <td>
-                                                        <div class="btn-group btn-group-sm">
-                                                            <button class="btn btn-outline-primary" onclick="editUser(<?= $user['id'] ?>)"><i class="fas fa-edit"></i></button>
-                                                            <button class="btn btn-outline-danger" onclick="confirmDelete(<?= $user['id'] ?>)"><i class="fas fa-trash-alt"></i></button>
+                                                        <div class="d-flex gap-1 justify-content-center">
+                                                            <button class="btn btn-outline-primary btn-sm" onclick="editUser(<?= $user['id'] ?>)"><i class="fas fa-edit"></i></button>
+                                                            <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete(<?= $user['id'] ?>)"><i class="fas fa-trash-alt"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
