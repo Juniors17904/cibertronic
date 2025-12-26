@@ -1,10 +1,12 @@
 <!-- Pie de página -->
-<footer class="bg-dark text-white text-center py-1">
+<footer class="bg-dark text-white text-center py-3 mt-auto">
     <div class="container">
-        <p>&copy; <?php echo date("Y"); ?> Cibertronic S.R.L. Todos los derechos reservados.</p>
-        <p>
-            <a href="" class="text-white">Política de Privacidad</a> |
-            <a href="" class="text-white">Términos de Servicio</a>
+        <p class="mb-2 small">&copy; <?php echo date("Y"); ?> Cibertronic S.R.L. Todos los derechos reservados.</p>
+        <p class="mb-0 small">
+            <a href="#" class="text-white text-decoration-none me-2">Política de Privacidad</a>
+            <span class="d-none d-sm-inline">|</span>
+            <br class="d-sm-none">
+            <a href="#" class="text-white text-decoration-none ms-sm-2">Términos de Servicio</a>
         </p>
     </div>
 </footer>
