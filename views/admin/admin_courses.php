@@ -21,7 +21,7 @@ $horario_id = $_GET['horario_id'] ?? '';
         <div class="row">
             <?php include 'lateral.php'; ?>
 
-            <main class="col-md-8 col-lg-9 px-md-5 py-4">
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
 
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -98,9 +98,10 @@ $horario_id = $_GET['horario_id'] ?? '';
 
                             </div>
 
-                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                                <table class="table table-striped table-hover align-middle">
-                                    <thead class="table-light">
+                            <div class="mx-n3 mx-md-0">
+                                <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
+                                    <table class="table table-striped table-hover align-middle table-sm mb-0">
+                                        <thead class="table-light sticky-top">
                                         <tr>
                                             <th>#</th>
                                             <th class="text-center">Código de Asignación</th>
@@ -128,7 +129,8 @@ $horario_id = $_GET['horario_id'] ?? '';
                                             </tr>
                                         <?php endwhile; ?>
                                     </tbody>
-                                </table>
+                                    </table>
+                                </div>
                             </div>
 
                         <?php else: ?>

@@ -99,9 +99,10 @@ include '../header.php';
                         <h5 class="mb-0">Detalle de Asistencias</h5>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                            <table class="table table-bordered table-hover text-center">
-                                <thead class="table-light">
+                        <div class="mx-n3 mx-md-0">
+                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
+                                <table class="table table-bordered table-hover text-center table-sm mb-0">
+                                    <thead class="table-light sticky-top">
                                     <tr>
                                         <th>Fecha</th>
                                         <th>Código Alumno</th>
@@ -114,7 +115,8 @@ include '../header.php';
                                         <td colspan="4">Cargando datos...</td>
                                     </tr>
                                 </tbody>
-                            </table>
+                                </table>
+                            </div>
                         </div>
                         <!-- ✅ Botón Volver -->
                         <a href="admin_detalle_asignaciones.php?asignacion_id=<?= $id_asig ?>" class="btn btn-secondary mt-3">

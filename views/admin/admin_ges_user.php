@@ -128,9 +128,10 @@ $estado = $_GET['estado'] ?? '';
                             </div>
 
                             <!-- Tabla -->
-                            <div class="table-responsive" style=" max-height: 500px; overflow-y: auto;">
-                                <table class="table table-striped table-hover align-middle">
-                                    <thead class="table-light">
+                            <div class="mx-n3 mx-md-0">
+                                <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
+                                    <table class="table table-striped table-hover align-middle table-sm mb-0">
+                                        <thead class="table-light sticky-top">
                                         <tr>
                                             <th></th>
                                             <th>Código Usuario</th>
@@ -201,7 +202,8 @@ $estado = $_GET['estado'] ?? '';
                                             echo "<tr><td colspan='8'>" . $e->getMessage() . "</td></tr>";
                                         } ?>
                                     </tbody>
-                                </table>
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="mt-3 d-flex justify-content-between">

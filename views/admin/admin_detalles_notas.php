@@ -85,9 +85,10 @@ include '../header.php';
                         <h5 class="mb-0">Detalle de Notas</h5>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                            <table class="table table-bordered table-hover text-center">
-                                <thead class="table-light">
+                        <div class="mx-n3 mx-md-0">
+                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
+                                <table class="table table-bordered table-hover text-center table-sm mb-0">
+                                    <thead class="table-light sticky-top">
                                     <tr>
                                         <th>Código Alumno</th>
                                         <th>Alumno</th>
@@ -103,7 +104,8 @@ include '../header.php';
                                         <td colspan="7">Cargando datos...</td>
                                     </tr>
                                 </tbody>
-                            </table>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- ✅ Botón Volver -->

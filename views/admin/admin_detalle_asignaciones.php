@@ -89,9 +89,10 @@ $alumnos = $conn->query("
                     </div>
                     <div class="card-body">
                         <?php if ($alumnos->num_rows > 0): ?>
-                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                                <table class="table table-striped">
-                                    <thead class="table-light">
+                            <div class="mx-n3 mx-md-0">
+                                <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
+                                    <table class="table table-striped table-sm mb-0">
+                                        <thead class="table-light sticky-top">
                                         <tr>
                                             <th>#</th>
                                             <th>Nombre</th>
@@ -112,7 +113,8 @@ $alumnos = $conn->query("
                                             </tr>
                                         <?php endwhile; ?>
                                     </tbody>
-                                </table>
+                                    </table>
+                                </div>
                             </div>
                         <?php else: ?>
                             <p class="text-muted">No hay alumnos matriculados.</p>
