@@ -22,9 +22,8 @@ $estado = $_GET['estado'] ?? '';
     <div class="container-fluid mt-0">
         <div class="row">
             <?php include 'lateral.php' ?>
-            <main class="col-md-8 col-lg-9 px-2 px-md-5">
-                <div class="container-fluid p-4">
-                    <?php
+            <main class="col-md-8 col-lg-9 px-2 px-md-5 py-4">
+                <?php
                     try {
                         $admins = $conn->query("SELECT COUNT(*) FROM usuarios WHERE rol='administrador'")->fetch_row()[0];
                         $profesores = $conn->query("SELECT COUNT(*) FROM usuarios WHERE rol='profesor'")->fetch_row()[0];
@@ -34,47 +33,41 @@ $estado = $_GET['estado'] ?? '';
                     }
                     ?>
 
-                    <!-- Tarjetas -->
+                    <!-- Tarjetas -->   
 
                     <div class="row mb-4">
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-4 mb-3">
                             <div class="card border-primary shadow-sm h-100">
-                                <div class="card-body d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="text-muted">Administradores</h6>
-                                        <h3><?= htmlspecialchars($admins) ?></h3>
-                                    </div>
-                                    <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                <div class="card-body text-center">
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded d-inline-block mb-2">
                                         <i class="fas fa-user-shield text-primary fa-2x"></i>
                                     </div>
+                                    <h6 class="text-muted mb-1">Administradores</h6>
+                                    <h3 class="mb-0"><?= htmlspecialchars($admins) ?></h3>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-4 mb-3">
                             <div class="card border-success shadow-sm h-100">
-                                <div class="card-body d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="text-muted">Profesores</h6>
-                                        <h3><?= htmlspecialchars($profesores) ?></h3>
-                                    </div>
-                                    <div class="bg-success bg-opacity-10 p-3 rounded">
+                                <div class="card-body text-center">
+                                    <div class="bg-success bg-opacity-10 p-3 rounded d-inline-block mb-2">
                                         <i class="fas fa-chalkboard-teacher text-success fa-2x"></i>
                                     </div>
+                                    <h6 class="text-muted mb-1">Profesores</h6>
+                                    <h3 class="mb-0"><?= htmlspecialchars($profesores) ?></h3>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-4 mb-3">
                             <div class="card border-info shadow-sm h-100">
-                                <div class="card-body d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="text-muted">Alumnos</h6>
-                                        <h3><?= htmlspecialchars($alumnos) ?></h3>
-                                    </div>
-                                    <div class="bg-info bg-opacity-10 p-3 rounded">
+                                <div class="card-body text-center">
+                                    <div class="bg-info bg-opacity-10 p-3 rounded d-inline-block mb-2">
                                         <i class="fas fa-user-graduate text-info fa-2x"></i>
                                     </div>
+                                    <h6 class="text-muted mb-1">Alumnos</h6>
+                                    <h3 class="mb-0"><?= htmlspecialchars($alumnos) ?></h3>
                                 </div>
                             </div>
                         </div>
@@ -82,17 +75,20 @@ $estado = $_GET['estado'] ?? '';
 
                     <!-- Tabla -->
                     <div class="card shadow">
-                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                            <h5><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h5>
-                            <div class="d-flex gap-2 flex-wrap">
-                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
-                                    <i class="fas fa-plus me-1"></i> Nuevo
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center flex-wrap">
+                            <h5 class="mb-2 mb-md-0"><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h5>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-light btn-sm d-flex flex-column align-items-center" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
+                                    <i class="fas fa-plus mb-1"></i>
+                                    <span style="font-size: 0.7rem;">Nuevo</span>
                                 </button>
-                                <button class="btn btn-danger btn-sm" id="btnAbrirModalEliminarSeleccionados">
-                                    <i class="fas fa-trash me-1"></i> Borrar
+                                <button class="btn btn-danger btn-sm d-flex flex-column align-items-center" id="btnAbrirModalEliminarSeleccionados">
+                                    <i class="fas fa-trash mb-1"></i>
+                                    <span style="font-size: 0.7rem;">Borrar</span>
                                 </button>
-                                <button class="btn btn-success btn-sm">
-                                    <i class="fas fa-file-import me-1"></i> Importar
+                                <button class="btn btn-success btn-sm d-flex flex-column align-items-center">
+                                    <i class="fas fa-file-import mb-1"></i>
+                                    <span style="font-size: 0.7rem;">Importar</span>
                                 </button>
                             </div>
                         </div>
@@ -130,23 +126,23 @@ $estado = $_GET['estado'] ?? '';
                                 <div class="table-responsive" style="max-height: 500px; overflow-y: auto; overflow-x: auto;">
                                     <table class="table table-striped table-hover align-middle table-sm mb-0">
                                         <thead class="table-light sticky-top">
-                                        <tr>
-                                            <th></th>
-                                            <th>Código Usuario</th>
-                                            <th>Email</th>
-                                            <th>Nombre</th>
-                                            <th>DNI</th>
-                                            <th>Rol</th>
-                                            <th>Teléfono</th>
-                                            <th>Estado</th>
-                                            <th width="100px">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                            <tr>
+                                                <th></th>
+                                                <th>Código Usuario</th>
+                                                <th>Email</th>
+                                                <th>Nombre</th>
+                                                <th>DNI</th>
+                                                <th>Rol</th>
+                                                <th>Teléfono</th>
+                                                <th>Estado</th>
+                                                <th width="100px">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
 
-                                        <?php
-                                        $query = "SELECT 
+                                            <?php
+                                            $query = "SELECT 
                                                 u.*, 
                                                 COALESCE(a.nombre, p.nombre, ad.nombre) AS nombre_completo,
                                                 COALESCE(a.apellidos, p.apellidos, ad.apellidos) AS apellidos_completos,
@@ -159,47 +155,47 @@ $estado = $_GET['estado'] ?? '';
                                             LEFT JOIN administrador ad ON u.id = ad.usuario_id
                                             WHERE 1";
 
-                                        if ($rol !== '') {
-                                            $query .= " AND u.rol = '$rol'";
-                                        }
-                                        if ($estado !== '') {
-                                            $query .= " AND u.estado = '$estado'";
-                                        }
+                                            if ($rol !== '') {
+                                                $query .= " AND u.rol = '$rol'";
+                                            }
+                                            if ($estado !== '') {
+                                                $query .= " AND u.estado = '$estado'";
+                                            }
 
-                                        $query .= " ORDER BY u.id";
+                                            $query .= " ORDER BY u.id";
 
 
-                                        try {
-                                            $result = $conn->query($query);
-                                            if ($result === false) throw new Exception("Error: " . $conn->error);
-                                            while ($user = $result->fetch_assoc()):
-                                                $badgeColor = match ($user['rol']) {
-                                                    'administrador' => 'bg-danger',
-                                                    'profesor' => 'bg-success',
-                                                    default => 'bg-info'
-                                                };
-                                        ?>
-                                                <tr>
-                                                    <td><input type="checkbox" class="form-check-input user-checkbox" value="<?= $user['id'] ?>"></td>
-                                                    <td><?= htmlspecialchars($user['codigo_usuario'] ?? 'N/A') ?></td>
-                                                    <td><?= htmlspecialchars($user['correo']) ?></td>
-                                                    <td><?= htmlspecialchars($user['nombre_completo'] . ' ' . $user['apellidos_completos']) ?></td>
-                                                    <td><?= htmlspecialchars($user['dni_completo'] ?? 'N/A') ?></td>
-                                                    <td><span class="badge <?= $badgeColor ?>"><?= ucfirst($user['rol']) ?></span></td>
-                                                    <td><?= htmlspecialchars($user['telefono_completo'] ?? 'N/A') ?></td>
-                                                    <td><span class="badge <?= $user['estado'] == 'activo' ? 'bg-success' : 'bg-secondary' ?>"><?= ucfirst($user['estado']) ?></span></td>
-                                                    <td>
-                                                        <div class="d-flex gap-1 justify-content-center">
-                                                            <button class="btn btn-outline-primary btn-sm" onclick="editUser(<?= $user['id'] ?>)"><i class="fas fa-edit"></i></button>
-                                                            <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete(<?= $user['id'] ?>)"><i class="fas fa-trash-alt"></i></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                        <?php endwhile;
-                                        } catch (Exception $e) {
-                                            echo "<tr><td colspan='8'>" . $e->getMessage() . "</td></tr>";
-                                        } ?>
-                                    </tbody>
+                                            try {
+                                                $result = $conn->query($query);
+                                                if ($result === false) throw new Exception("Error: " . $conn->error);
+                                                while ($user = $result->fetch_assoc()):
+                                                    $badgeColor = match ($user['rol']) {
+                                                        'administrador' => 'bg-danger',
+                                                        'profesor' => 'bg-success',
+                                                        default => 'bg-info'
+                                                    };
+                                            ?>
+                                                    <tr>
+                                                        <td><input type="checkbox" class="form-check-input user-checkbox" value="<?= $user['id'] ?>"></td>
+                                                        <td><?= htmlspecialchars($user['codigo_usuario'] ?? 'N/A') ?></td>
+                                                        <td><?= htmlspecialchars($user['correo']) ?></td>
+                                                        <td><?= htmlspecialchars($user['nombre_completo'] . ' ' . $user['apellidos_completos']) ?></td>
+                                                        <td><?= htmlspecialchars($user['dni_completo'] ?? 'N/A') ?></td>
+                                                        <td><span class="badge <?= $badgeColor ?>"><?= ucfirst($user['rol']) ?></span></td>
+                                                        <td><?= htmlspecialchars($user['telefono_completo'] ?? 'N/A') ?></td>
+                                                        <td><span class="badge <?= $user['estado'] == 'activo' ? 'bg-success' : 'bg-secondary' ?>"><?= ucfirst($user['estado']) ?></span></td>
+                                                        <td>
+                                                            <div class="d-flex gap-1 justify-content-center">
+                                                                <button class="btn btn-outline-primary btn-sm" onclick="editUser(<?= $user['id'] ?>)"><i class="fas fa-edit"></i></button>
+                                                                <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete(<?= $user['id'] ?>)"><i class="fas fa-trash-alt"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                            <?php endwhile;
+                                            } catch (Exception $e) {
+                                                echo "<tr><td colspan='8'>" . $e->getMessage() . "</td></tr>";
+                                            } ?>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -211,7 +207,6 @@ $estado = $_GET['estado'] ?? '';
                             </div>
                         </div>
                     </div>
-                </div>
             </main>
         </div>
     </div>

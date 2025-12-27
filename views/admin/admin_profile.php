@@ -38,12 +38,26 @@ include '../header.php';
                                             class="img-thumbnail rounded-circle"
                                             style="width: 150px; height: 150px; object-fit: cover;">
 
-                                        <button type="button"
-                                            class="btn btn-light border rounded-circle p-2 position-absolute"
-                                            style="bottom: 10px; right: 10px;"
-                                            onclick="document.getElementById('fileInput').click();">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
+                                        <div class="dropdown position-absolute" style="bottom: 10px; right: 10px;">
+                                            <button type="button"
+                                                class="btn btn-light border rounded-circle p-2"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="document.getElementById('fileInput').click(); return false;">
+                                                        <i class="bi bi-upload me-2"></i>Cambiar foto
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item text-danger" href="#" onclick="eliminarFoto(); return false;">
+                                                        <i class="bi bi-trash me-2"></i>Eliminar foto
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -269,6 +283,29 @@ include '../header.php';
                 document.getElementById('cancelarBtn').classList.remove('d-none');
             }
         });
+
+        function eliminarFoto() {
+            // Cambiar a la foto por defecto
+            document.getElementById('fotoPerfil').src = '<?= BASE_URL ?>/assets/images/perfil.jpg';
+
+            // Crear un input hidden para indicar que se eliminó la foto
+            let inputEliminar = document.getElementById('eliminar_foto');
+            if (!inputEliminar) {
+                inputEliminar = document.createElement('input');
+                inputEliminar.type = 'hidden';
+                inputEliminar.id = 'eliminar_foto';
+                inputEliminar.name = 'eliminar_foto';
+                inputEliminar.value = '1';
+                document.getElementById('adminForm').appendChild(inputEliminar);
+            }
+
+            // Limpiar el file input
+            document.getElementById('fileInput').value = '';
+
+            // Activar botones
+            document.getElementById('guardarBtn').classList.remove('d-none');
+            document.getElementById('cancelarBtn').classList.remove('d-none');
+        }
 
 
 
