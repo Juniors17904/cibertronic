@@ -24,4 +24,13 @@
 
     <!-- Estilos personalizados -->
     <link href="<?= BASE_URL ?>/assets/css/styles.css" rel="stylesheet">
+
+    <?php if (defined('IS_LOCAL') && IS_LOCAL): ?>
+    <!-- Auto-refresh solo en desarrollo local -->
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 3000); // Recarga cada 3 segundos
+    </script>
+    <?php endif; ?>
 </head>
