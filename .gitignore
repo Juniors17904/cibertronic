@@ -1,0 +1,20 @@
+# Archivos de configuración con credenciales sensibles
+config/database.php
+
+# Archivos locales de configuración
+*.local.php
+.env
+
+# Configuración de Claude Code
+.claude/settings.local.json
+
+# Archivos de backup
+*copy.php
+*test.php
+
+# Archivos temporales de Windows
+Thumbs.db
+desktop.ini
+
+# Archivos temporales de macOS
+.DS_Store
