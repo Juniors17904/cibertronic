@@ -32,5 +32,5 @@
             //     location.reload();
             // }, 10000); // Recarga cada 3 segundos
         </script>
-        <?php endif; ?>ee
+    <?php endif; ?>
 </head>
