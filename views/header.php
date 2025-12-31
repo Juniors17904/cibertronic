@@ -10,7 +10,7 @@
     ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="<?= defined('BASE_URL') ? BASE_URL : '' ?>/assets/images/logo.jpg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/assets/images/logo.jpg">
     <title>Bienvenido a Cibertronic</title>
 
     <!-- Bootstrap CSS -->
@@ -23,7 +23,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Estilos personalizados -->
-    <link href="<?= defined('BASE_URL') ? BASE_URL : '' ?>/assets/css/styles.css" rel="stylesheet">
+    <link href="<?= BASE_URL ?>/assets/css/styles.css" rel="stylesheet">
 
     <?php if (defined('IS_LOCAL') && IS_LOCAL): ?>
         <!-- Auto-refresh solo en desarrollo local -->
