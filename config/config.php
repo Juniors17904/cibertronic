@@ -14,7 +14,7 @@ if ($_SERVER['SERVER_NAME'] == '192.168.1.102' || $_SERVER['SERVER_NAME'] == 'lo
     $password = "";
 } else {
     // Entorno de producción
-    define('BASE_URL', 'http://cibertronic.infinityfree.me');
+    define('BASE_URL', 'https://cibertronic.infinityfree.me');
     define('IS_LOCAL', false);
 
     // Base de datos producción
