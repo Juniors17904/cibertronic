@@ -7,11 +7,6 @@ if ($_SERVER['SERVER_NAME'] == '192.168.1.102' || $_SERVER['SERVER_NAME'] == 'lo
     define('BASE_URL', 'http://' . $_SERVER['SERVER_NAME'] . ':81/CIBERTRO');
     define('IS_LOCAL', true);
 
-    // Desactivar caché en desarrollo
-    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-    header("Pragma: no-cache");
-    header("Expires: 0");
-
     // Base de datos local
     $host = "localhost";
     $dbname = "cibertronicbd";
