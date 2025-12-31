@@ -4,7 +4,7 @@ date_default_timezone_set('America/Lima'); // ✅ Zona horaria correcta para Per
 // Detección de entorno
 if ($_SERVER['SERVER_NAME'] == '192.168.1.102' || $_SERVER['SERVER_NAME'] == 'localhost') {
     // Entorno local de desarrollo
-    define('BASE_URL', 'http://192.168.1.102:81/cibertro');
+    define('BASE_URL', 'http://192.168.1.102:81/CIBERTRO');
     define('IS_LOCAL', true);
 
     // Desactivar caché en desarrollo
